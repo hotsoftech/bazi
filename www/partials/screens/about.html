@@ -1,0 +1,134 @@
+<template>
+	<div class="page no-swipeback no-navbar" data-name="about">
+		<div class="page-content">
+
+			<div class="block no-margin-bottom">
+				<img class="app-logo theme-light-only" src="{{$root.config.app.logo}}" alt="" />
+				<!--<div class="app-title" data-i18n="about.{{$root.config.app.title}}">{{$root.config.app.title}}</div>
+				<div class="app-tagline" data-i18n="about.{{$root.config.app.tagline}}">{{$root.config.app.tagline}}</div>-->
+				<div class="app-version">{{appVersion}}</div>
+			</div>
+
+			<div class="block no-margin-bottom text-justify">
+				<p><span data-i18n="about.info">Sun IT provides software solutions. The Company develops platform that provides birthday code analysis, five element balance readings and other related services. SUN IT serves customers around the world. Strictly based on big data and statistic and prefer no fortune telling.</span></p>
+			</div>
+            
+			<!--<div class="block no-margin-bottom">
+				<a href="https://behance.com" target="_blank" class="external">
+					<i class="fa-stack">
+						<span class="fas fa-circle fa-stack-2x brand-color-behance"></span>
+						<span class="fab fa-behance fa-stack-1x fa-inverse"></span>
+					</i>
+				</a>
+				<a href="https://dribbble.com" target="_blank" class="external">
+					<i class="fa-stack">
+						<span class="fas fa-circle fa-stack-2x brand-color-dribbble"></span>
+						<span class="fab fa-dribbble fa-stack-1x fa-inverse"></span>
+					</i>
+				</a>
+				<a href="https://facebook.com" target="_blank" class="external">
+					<i class="fa-stack">
+						<span class="fas fa-circle fa-stack-2x brand-color-facebook"></span>
+						<span class="fab fa-facebook-f fa-stack-1x fa-inverse"></span>
+					</i>
+				</a>
+				<a href="https://github.com" target="_blank" class="external">
+					<i class="fa-stack">
+						<span class="fas fa-circle fa-stack-2x brand-color-github"></span>
+						<span class="fab fa-github fa-stack-1x fa-inverse"></span>
+					</i>
+				</a>
+				<a href="https://linkedin.com" target="_blank" class="external">
+					<i class="fa-stack">
+						<span class="fas fa-circle fa-stack-2x brand-color-linkedin"></span>
+						<span class="fab fa-linkedin-in fa-stack-1x fa-inverse"></span>
+					</i>
+				</a>
+				<a href="https://twitter.com" target="_blank" class="external">
+					<i class="fa-stack">
+						<span class="fas fa-circle fa-stack-2x brand-color-twitter"></span>
+						<span class="fab fa-twitter fa-stack-1x fa-inverse"></span>
+					</i>
+				</a>
+				<a href="https://youtube.com" target="_blank" class="external">
+					<i class="fa-stack">
+						<span class="fas fa-circle fa-stack-2x brand-color-youtube"></span>
+						<span class="fab fa-youtube fa-stack-1x fa-inverse"></span>
+					</i>
+				</a>
+			</div>-->
+
+			<div class="block">
+				<div class="app-developer"></div>
+			</div>
+
+		</div>
+
+	</div>
+</template>
+
+<style scoped>
+	.page-content {
+		align-items: stretch;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		justify-content: flex-start;
+		text-align: center;
+        background:url("img/bg_about.png") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+	}
+
+	.page-content > :last-child {
+		margin-top: auto;
+	}
+
+	.app-logo {
+		height: 128px;
+		width: auto;
+	}
+
+	.app-title {
+		font-size: 17px;
+	}
+
+	.app-tagline {
+		font-size: 14px;
+	}
+
+	.app-version {
+		font-size: 12px;
+	}
+
+	.app-developer {
+		font-size: 11px;
+	}
+
+	.fa-coffee {
+		color: #964B00;
+	}
+
+	.fa-heart {
+		color: #FA5252;
+	}
+</style>
+
+<script>
+	return {
+		data: function() {
+			return {
+			    appVersion: (function() {
+					//if (app.device.cordova && BuildInfo) {
+					//	return BuildInfo.version;
+					//}
+					//else {
+						return app.version;
+					//}
+				})()
+			}
+		}
+	}
+</script>

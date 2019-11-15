@@ -1,0 +1,236 @@
+<template>
+	<div class="page no-swipeback no-navbar" data-name="home">
+		<div class="page-content">
+            
+            <div class="discover-gradient">
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none"><polygon fill="white" points="0,100 100,0 100,100"></polygon></svg>
+            </div>
+            <div class="block">
+                <div class="title-container white">
+                    <div class="nav-back">
+                        <div class="title-with-link">
+                        <h1><span data-i18n="form.mytitle">My Information</span></h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="blog-categories blog-categories-1 mb-1 mt-4">
+                    <a @click="selected(1);"><strong></strong><em data-i18n="form.aboutme">ABOUT ME</em>
+                        <span class="bg-green-dark opacity-70"></span><img src="img/8w.jpg" data-src="img/8w.jpg" class="preload-image responsive-image" alt="img"></a>
+                </div>
+                <div class="blog-categories blog-categories-2 mb-1">
+                    <a @click="selected(2);"><strong></strong><em data-i18n="form.color">COLOR</em><span class="bg-blue-dark opacity-70"></span><img src="img/7s.jpg" data-src="img/7s.jpg" class="preload-image responsive-image" alt="img"></a>
+                    <a @click="selected(3);"><strong></strong><em data-i18n="form.direction">DIRECTION</em><span class="bg-pink-dark opacity-70"></span><img src="img/9s.jpg" data-src="img/9s.jpg" class="preload-image responsive-image" alt="img"></a>
+                    <div class="clear"></div>
+                </div>
+                <div class="blog-categories blog-categories-2 mb-1">
+                    <a @click="selected(4);"><strong></strong><em data-i18n="form.number">NUMBER</em><span class="bg-red-dark opacity-70"></span><img src="img/10s.jpg" data-src="img/10s.jpg" class="preload-image responsive-image" alt="img"></a>
+                    <a @click="selected(5);"><strong></strong><em data-i18n="form.alphabet">ALPHABET</em><span class="bg-teal-dark opacity-70"></span><img src="img/11s.jpg" data-src="img/11s.jpg" class="preload-image responsive-image" alt="img"></a>
+                    <div class="clear"></div>
+                </div>
+            </div>
+		</div>
+        
+	</div>
+</template>
+
+<style scoped>
+
+.discover-gradient {
+    width: 100%;
+    height: 200px;
+    position: absolute;
+    background: #8705f0;
+    background: linear-gradient(to right, #ff2e54, #c519e4);
+}
+
+.discover-gradient svg {
+    position: absolute;
+    bottom: 0;
+    width: calc(100%);
+    height: 70px;
+}
+
+.title-container {
+    margin: 30px 0 10px;
+    
+}
+.nav-back {
+    display: flex;
+}
+.title-container .back i.icon-back {
+  width:auto;
+  height:auto;
+  display: inline-block;
+  border-radius: 50%;
+  box-shadow: 0px 0px 3px #fff;
+  padding: 0.3em 0.4em;
+  /*background-color: #F54E5E;*/
+}
+
+ .title-container.white h1 {
+    color: #fff;
+    padding-left: 15px;
+}
+
+.block {
+    margin: 0px;
+}
+
+.title-container.white i {
+    color: #fff;
+    font-size: 30px;
+}
+
+div {
+    display: block;
+    position: relative;
+}
+
+.content {
+    padding: 0 20px;
+    margin-bottom: 30px;
+}
+
+.opacity-70 {
+    opacity: .7;
+}
+
+.bg-green-dark {
+    background-color: #8cc152!important;
+    color: #fff;
+}
+.bg-blue-dark {
+    background-color: #4a89dc!important;
+    color: #fff;
+}
+
+.bg-pink-dark {
+    background-color: #fb3365!important;
+    color: #fff;
+}
+.bg-red-dark {
+    background-color: #c0392b!important;
+    color: #fff;
+}
+.bg-teal-dark {
+    background-color: #7db1b1!important;
+    color: #fff;
+}
+
+.responsive-image {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.blog-categories a {
+    border-radius: 15px!important;
+    overflow: hidden;
+    box-shadow: 0 10px 47px 0 rgba(0,0,0,.05), 0 5px 14px 0 rgba(0,0,0,.2);
+    display: block;
+    position: relative;
+}
+
+.blog-categories-1 a {
+    width: 97%;
+    margin: 0% 1.5% 5%;
+}
+
+.blog-categories-2 a {
+    width: 47%;
+    float: left;
+    margin: 0% 1.5% 5%;
+}
+
+.blog-categories strong {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9;
+    background-color: rgba(0,0,0,.2);
+}
+
+.blog-categories em {
+    text-transform: uppercase;
+    font-weight: 700;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    color: #fff;
+    top: 50%;
+    margin-top: -15px;
+    z-index: 10;
+    font-style: normal;
+    text-shadow: 0 1px 0 #000;
+}
+
+.blog-categories-1 em {
+    font-size: 26px;
+}
+
+.blog-categories-2 em {
+    font-size: 20px;
+}
+.blog-categories a span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 8;
+}
+
+.blog-categories a img {
+    margin-bottom: 0;
+}
+
+
+
+</style>
+
+<script>
+	return {
+		data: function() {
+		    return {
+		        client_id: ''
+		    }
+		},
+		methods: {
+		    selected: function (option) {
+
+		        //console.log(option);
+		        var self = this;
+		        var Id = localStorage.getItem('Bazi_Default');
+ 
+		        if (option == 1) {
+		            app.view.current.router.navigate('/aboutme/' + Id);
+		        } else if (option == 2) {
+		            app.view.current.router.navigate('/color/' + Id);
+		        } else if (option == 3) {
+		            app.view.current.router.navigate('/direction/' + Id);
+		        } else if (option == 4) {
+		            app.view.current.router.navigate('/number/' + Id);
+		        } else {
+		            app.view.current.router.navigate('/alphabet/' + Id);
+		        }
+		    }
+		},
+		on: {
+		    pageInit: function() {
+		        var self = this;
+		        var Id = localStorage.getItem('Bazi_Default');
+		        //console.log(Id);
+		        self.$setState({
+		            client_id: Id
+		        });
+		        
+			},
+		}
+	}
+</script>

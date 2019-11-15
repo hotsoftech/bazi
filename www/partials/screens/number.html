@@ -1,0 +1,322 @@
+﻿<template>
+    <div class="page no-toolbar" data-name="number">
+
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="left">
+                    <a href="#" class="link back">
+                        <i class="icon icon-back"></i>
+                        <span class="ios-only" data-i18n="global.back">Back</span>
+                    </a>
+                </div>
+                <div class="title" data-i18n="form.number">Number</div>
+            </div>
+        </div>
+
+		<div class="page-content">
+            <div id="divResult" style="display:none">
+                <h4 class="block-title first-title"><span data-i18n="number.name-numbers">My Life Number</span></h4>
+                <div class="block block-item">
+                    <img src="assets/custom/img/alphanumeric/{{self_number}}.png" class="item-img" />
+                </div>
+                <h4 class="block-title"><span data-i18n="number.life-figures">My Life Figure</span></h4>
+                <div class="block block-item text-center">
+                    <span id="_lifefigure"></span>
+                </div>
+                <h4 class="block-title"><span data-i18n="number.lucky-number">My Lucky Number</span></h4>
+                <div class="block block-item">
+                    <div class="row text-center">
+                         {{#each lucky_number}}
+                            <div class="col"><img src="assets/custom/img/alphanumeric/{{this}}.png" class="item-img"></div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+            <div class="gauge gauge-semicircle" style="display:none"></div>
+            <form name="number-form" id="number-form" class="ck-form" >
+                <div class="list no-hairlines no-hairlines-between">
+                <ul>
+                  <li class="item-content item-input">
+                    <div class="item-inner">
+                      <label for="form-name" class="item-title item-label" data-i18n="number.preferred-number">Preferred Numbers</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-list-ol"></i></span>
+                          </div>
+                          <input type="number" class="form-control" id="form-preferdegree-number" name="form-preferdegree-number" required>
+                          <span class="input-clear-button"></span>
+                        </div>
+                        <div class="input-error-message" id="invalid-form-preferdegree-number"></div>
+                    </div>
+                  </li>
+                </ul>
+                </div>
+                <div class="block">
+				    <a class="button button-big button-fill red-button" @click="matching(this);" data-i18n="alphabet.match" id="number-submit">Match</a>
+			    </div>
+            </form>
+
+	</div>
+</template>
+<style scoped>
+    .first-title {
+        margin-top: 10px;
+    }
+
+    .life_time {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .life_percentages {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .dialog-button.color-black {
+        color: var(--f7-dialog-title-text-color)!important;
+    }
+ 
+    
+</style>
+
+<script>
+    return {
+        data: function () {
+            return {
+                self_number: '',
+                lucky_number: ''
+            }
+        },
+        methods: {
+            initializeFormValidator: function(self) {
+
+                $('#number-form').on('focus', ':input', function () {
+                    $(this).attr('autocomplete', 'off');
+                });
+
+                $("#number-form").validate({
+                    rules: {
+                        "form-preferdegree-number": {
+                            required: true,
+                            pattern: "[0-9]*"
+                        }
+                    },
+                    messages: {
+                        "form-preferdegree-number": {
+                            required: i18next.t("form.emptyerror"),
+                            pattern: i18next.t("direction.pattern-invalid"),
+                            number:  i18next.t("number.invalid-number"),
+                        }
+                    },
+                    errorPlacement: function(error, element) {
+                        error.appendTo('#invalid-' + element.attr('id'));
+                    },
+                });
+
+                $('#number-form').submit(function () {
+                    self.matching();
+                    return false;
+                });
+
+            },
+            matching: function () {
+                var self = this;
+                if ($("#number-form").valid()) {
+
+                    var number = $("#form-preferdegree-number").val();
+
+                    if (number != '') {
+                        var alpha = self.lucky_number.toString().split(",").join("");
+                        //console.log(alpha, 'cal');
+                        var patt = new RegExp('[' + alpha + ']', 'gi');
+                        //console.log(patt, "cal");
+                        //console.log(number.match(patt), "cal");
+                        var match = number.match(patt) || [];
+
+                        //if (match.length >= number.length * 0.5) {
+                        //    self.showSuccessAlertDialog();
+                        //} else {
+                        //    self.showDangerAlertDialog();
+                        //}
+
+                        var matchP = 0;
+
+                        matchP = (match.length / number.length);
+
+                        
+                        self.showResultDialog(matchP);
+                    }
+                }
+                
+
+            },
+            showSuccessAlertDialog: function () {
+                var dialog = app.dialog.create({
+                    title: i18next.t("form.number"),
+                    content: '<div class="block no-margin margin-top text-align-center"><i class="far fa-4x fa-smile text-color-green"></i></div>',
+                    cssClass: "result-dialog",
+                    buttons: [
+                        {
+                            text:  i18next.t("alphabet.match") ,
+                            bold: true,
+                            color: 'green'
+                        }
+                    ]
+                });
+                dialog.open();
+            },
+            showDangerAlertDialog: function () {
+                var dialog = app.dialog.create({
+                    title: i18next.t("form.number"),
+                    content: '<div class="block no-margin margin-top text-align-center"><i class="far fa-4x fa-frown text-color-red"></i></div>',
+                    cssClass: "result-dialog",
+                    buttons: [
+                        {
+                            text: i18next.t("alphabet.unmatch"),
+                            bold: true,
+                            color: 'red',
+                        }
+                    ]
+                });
+                dialog.open();
+            },
+            showResultDialog: function (matchP) {
+
+                var gauge;
+
+                var dialog = app.dialog.create({
+                    title: i18next.t("global.result"),
+                    content: '<div class="gauge gauge-semicircle mt-3"></div>',
+                    cssClass: "result-dialog text-center",
+                    buttons: [
+                        {
+                            text: "OK",
+                            bold: true,
+                            color: 'black',
+                        }
+                    ],
+                    on: {
+                        open: function (popup) {
+                            
+                        },
+                        opened: function (popup) {
+                            
+                            var matchValue = parseInt(matchP * 100);
+
+                            gauge = app.gauge.create({
+                                el: '.gauge-semicircle',
+                                type: 'semicircle',
+                                value: matchP,
+                                borderBgColor: '#f70068',
+                                borderColor: '#441066',
+                                borderWidth: 12,
+                                valueText: matchValue + '%',
+                                valueTextColor: '#441066',
+                                labelFontSize: 18,
+                                labelTextColor: '#f70068',
+                                labelText: i18next.t("global.match")
+                            });
+                        },
+                        close: function(popup) {
+                            app.gauge.destroy(".gauge-semicircle");
+                        }
+                    }
+                });
+
+                
+
+                dialog.open();
+            }
+        },
+        on: {
+            pageInit: function () {
+                var self = this;
+
+                var Id = self.$route.params.id;
+                var db;
+                var dbList = [];
+
+                dbList = JSON.parse(localStorage.getItem("bazi_list"));
+                db = $.grep(dbList, function(n) {
+                    return n.id == Id;
+                });
+
+
+                var d = new Date(db[0].dob);
+                var t = db[0].time.split(":");
+
+                var b = {
+                    cYear: d.getFullYear(), //公历年份
+                    cMonth: d.getMonth() + 1, //公历月份
+                    cDay: d.getDate(), //公历日期
+                    gender: db[0].gender
+                };
+
+                var calresult = calculator.getResult(b);
+                
+                $("#divResult").show();
+
+                self.initializeFormValidator(self);
+
+               
+                self.$setState({
+                    lucky_number: calresult.lucky_number,
+                    self_number: calresult.self_number
+                });
+
+                calLifeFigure(calresult.born_dead)
+
+                
+              
+             
+              }
+        }
+    }
+
+    function calLifeFigure(input) {
+        var temp = [0,0,0,0,0,0,0,0,0];
+        var total = 0;
+        var totalP = 0;
+        [].forEach.call(Object.keys(input), function (value, index) {
+           
+            var numberStr = input[index].toString();
+            if (numberStr.length >= 1) {
+                for (var i = 0; i < numberStr.length; i++) {
+                    var numberIndex = parseInt(numberStr.substring(i,i+1));
+                    temp[numberIndex-1]++;
+                    total +=1;
+                }
+            }
+        });
+        var html = "";
+        var percentage = 0;
+
+        [].forEach.call(Object.keys(temp), function (value, index) {
+            if (index == 0 || index == 3 || index == 6) {
+                html += "<div class=\"row\">";
+            }
+
+            percentage =  (temp[index] / total) * 100;
+            if ((totalP + percentage) > 100) {
+                percentage = 100 - totalP;
+                totalP = 100;
+            } else {
+                totalP += percentage 
+            }
+                        
+            var imageId = parseInt(index);
+            imageId += 1;
+
+            html += " <div class=\"col\"><img src=\"assets/custom/img/alphanumeric/" + imageId + ".png\" class=\"item-img\" /><br /><span class=\"life_time\">" + temp[index] + "</span><br /><span class=\"life_percentages\">" + percentage + "%</span> </div>";
+
+            if (index == 2 || index == 5 || index == 8) {
+                html += "</div>";
+            }
+            
+        });
+
+        $("#_lifefigure").html(html);
+                    
+    }
+</script>

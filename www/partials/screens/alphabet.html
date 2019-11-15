@@ -1,0 +1,308 @@
+﻿<template>
+    <div class="page no-toolbar" data-name="alphabet">
+
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="left">
+                    <a href="#" class="link back">
+                        <i class="icon icon-back"></i>
+                        <span class="ios-only" data-i18n="global.back">Back</span>
+                    </a>
+                </div>
+                <div class="title" data-i18n="form.alphabet">Alphabet</div>
+            </div>
+        </div>
+
+
+        <div class="page-content">
+            <div id="divResult" style="display:none">
+                <h4 class="block-title first-title"><span data-i18n="alphabet.suitable-letters">My Suitable for Letters</span></h4>
+                <div class="block block-item">
+                    {{#each alphabets}}
+                        <img src="assets/custom/img/alphanumeric/{{this}}.png" class="item-img" />
+                    {{/each}}
+                </div>
+                <h4 class="block-title"><span data-i18n="alphabet.suggest-name">Suggested Name</span></h4>
+                <div class="block block-item">
+                    <ol>
+                        {{#each name_list}}
+                        <li> <div class="label">{{this}}</div></li>
+                        {{/each}}
+                    </ol>
+                </div>
+            </div>
+
+            <form name="alphabet-form" id="alphabet-form" class="ck-form" >
+                <div class="list no-hairlines no-hairlines-between">
+                <ul>
+                  <li class="item-content item-input">
+                    <div class="item-inner">
+                      <label for="form-name" class="item-title item-label" data-i18n="alphabet.preferred-name">Preferred Name</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-font"></i></span>
+                          </div>
+                          <input type="text" class="form-control" id="form-prefername" name="form-prefername" required>
+                          <span class="input-clear-button"></span>
+                        </div>
+                        <div class="input-error-message" id="invalid-form-prefername"></div>
+                    </div>
+                  </li>
+                </ul>
+                </div>
+                <div class="block">
+				    <a class="button button-big button-fill red-button" @click="matching(this);" data-i18n="alphabet.match" id="number-submit">Match</a>
+			    </div>
+            </form>
+        </div>
+
+    </div>
+</template>
+<style scoped>
+    .first-title {
+        margin-top: 10px;
+    }
+
+    .label {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    ol {
+        font-weight: 600;
+    }
+</style>
+
+<script>
+    return {
+        data: function () {
+            return {
+                name_list: {},
+                alphabets: {}
+            }
+        },
+        methods: {
+            initializeFormValidator: function(self) {
+
+                $('#alphabet-form').on('focus', ':input', function () {
+                    $(this).attr('autocomplete', 'off');
+                });
+
+                $("#alphabet-form").validate({
+                    rules: {
+                        "form-prefername": {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        "form-prefername": {
+                            required: i18next.t("form.emptyerror")
+                        }
+                    },
+                    errorPlacement: function(error, element) {
+                        error.appendTo('#invalid-' + element.attr('id'));
+                    },
+                });
+
+                $('#alphabet-form').submit(function () {
+                    self.matching();
+                    return false;
+                });
+
+            },
+            matching: function () {
+                var self = this;
+
+                if ($("#alphabet-form").valid()) {
+                    var name = $("#form-prefername").val();
+
+                    if (name != '') {
+                        var alpha = self.alphabets.toString().split(",").join("");
+                        //console.log(alpha, 'cal');
+                        var patt = new RegExp('[' + alpha + ']', 'gi');
+                        //console.log(patt, "cal");
+                        //console.log(name.match(patt), "cal");
+                        var match = name.match(patt) || [];
+
+                        //if (match.length >= name.length * 0.5) {
+                        //    self.showSuccessAlertDialog();
+                        //} else {
+                        //    self.showDangerAlertDialog();
+                        //}
+
+                        var matchP = 0;
+
+                        matchP = (match.length / name.length);
+
+                        self.showResultDialog(matchP);
+                    }
+                }
+
+            },
+            showSuccessAlertDialog: function () {
+                var dialog = app.dialog.create({
+                    title: i18next.t("form.alphabet"),
+                    content: '<div class="block no-margin margin-top text-align-center"><i class="far fa-4x fa-smile text-color-green"></i></div>',
+                    cssClass: "result-dialog",
+                    buttons: [
+                        {
+                            text:  i18next.t("alphabet.match") ,
+                            bold: true,
+                            color: 'green'
+                        }
+                    ]
+                });
+                dialog.open();
+            },
+            showDangerAlertDialog: function () {
+                var dialog = app.dialog.create({
+                    title: i18next.t("form.alphabet"),
+                    content: '<div class="block no-margin margin-top text-align-center"><i class="far fa-4x fa-frown text-color-red"></i></div>',
+                    cssClass: "result-dialog",
+                    buttons: [
+                        {
+                            text: i18next.t("alphabet.unmatch"),
+                            bold: true,
+                            color: 'red',
+                        }
+                    ]
+                });
+                dialog.open();
+            },
+            showResultDialog: function (matchP) {
+
+                var gauge;
+
+                var dialog = app.dialog.create({
+                    title: i18next.t("global.result"),
+                    content: '<div class="gauge gauge-semicircle mt-3"></div>',
+                    cssClass: "result-dialog text-center",
+                    buttons: [
+                        {
+                            text: "OK",
+                            bold: true,
+                            color: 'black',
+                        }
+                    ],
+                    on: {
+                        open: function (popup) {
+                            
+                        },
+                        opened: function (popup) {
+                            
+                            var matchValue = parseInt(matchP * 100);
+
+                            gauge = app.gauge.create({
+                                el: '.gauge-semicircle',
+                                type: 'semicircle',
+                                value: matchP,
+                                borderBgColor: '#f70068',
+                                borderColor: '#441066',
+                                borderWidth: 12,
+                                valueText: matchValue + '%',
+                                valueTextColor: '#441066',
+                                labelFontSize: 18,
+                                labelTextColor: '#f70068',
+                                labelText: i18next.t("global.match")
+                            });
+                        },
+                        close: function(popup) {
+                            app.gauge.destroy(".gauge-semicircle");
+                        }
+                    }
+                });
+
+                
+
+                dialog.open();
+            }
+        },
+        on: {
+            pageInit: function () {
+                
+                var self = this;
+                var Id = self.$route.params.id;
+                var dbList = [];
+                var db;
+
+                dbList = JSON.parse(localStorage.getItem("bazi_list"));
+                db = $.grep(dbList, function(n) {
+                    return n.id == Id;
+                });
+
+                var d = new Date(db[0].dob);
+                var t = db[0].time.split(":");
+
+                var b = {
+                    cYear: d.getFullYear(), //公历年份
+                    cMonth: d.getMonth() + 1, //公历月份
+                    cDay: d.getDate(), //公历日期
+                    gender: db[0].gender
+                };
+
+
+                self.initializeFormValidator(self);
+
+                var calresult = calculator.getResult(b);
+                $("#divResult").show();
+
+                self.$setState({
+                    alphabets: calresult.alphabet.Good
+                });
+
+                getJsonName(self, calresult.alphabet.Good.toString(), db[0].gender);
+              }
+        }
+    }
+
+    function getJsonName(self, alpha, gender) {
+        var refLink;
+        var myName;
+        var retNames=[];
+        console.log(alpha.split(",").join(""), "alpha");
+        var patt = new RegExp('[' + alpha.split(",").join("") + ']', 'gi');
+
+        console.log(gender);
+
+        if (gender == 'M') {
+            refLink = 'assets/custom/dataset/boy_name.json';
+        } else {
+            refLink = 'assets/custom/dataset/girl_name.json';
+        }
+
+        $.getJSON(refLink, function (data) {
+
+            console.log(refLink, data);
+
+            var i = 0;
+            var j = 0;
+
+            do {
+
+                myName = data.names[parseInt(Math.random() * data.names.length)];
+
+                if (myName.length > 0) {
+                    var matchLength = myName.match(patt) || [];
+                    
+                    if (matchLength.length >= myName.length * 0.6) {
+                        i++;
+                        if (jQuery.inArray(myName, retNames) < 0 ) {
+                            retNames.push(myName);
+                        }
+                    }
+                    j++;
+                }
+               
+            }
+            while (i < 5 && j < 1000)  
+
+            
+            self.$setState({
+                name_list: retNames
+            });
+
+            
+        });
+
+    }
+</script>

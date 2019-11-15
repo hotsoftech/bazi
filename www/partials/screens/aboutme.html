@@ -1,0 +1,573 @@
+﻿<template>
+    <div class="page no-toolbar" data-name="calculator">
+
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="left">
+                    <a href="#" class="link back">
+                        <i class="icon icon-back"></i>
+                        <span class="ios-only" data-i18n="global.back">Back</span>
+                    </a>
+                </div>
+                <div class="title" data-i18n="form.aboutme">About Me</div>
+            </div>
+        </div>
+
+        <div class="page-content">
+            <div class="profile-header">
+                <div class="user">
+                    <div class="user-left">
+                        <img {{#js_if "this.client.gender == 'M'"}} src="assets/custom/img/boy.svg" {{else}} src="assets/custom/img/girl.svg" {{/js_if}} class="img-fluid rounded-circle" alt="user profile">
+                    </div>
+                    <div class="user-body">
+                        <h4>{{client.name}}</h4>
+                        <span class="d-block"><img src="assets/custom/img/calendar.png" class="icon-date" /><span class="user-dob">{{client.dob}} {{client.time}}</span></span>
+                        <span class="d-block"><img src="assets/custom/img/lunarcalendar.png" class="icon-date" /><span class="user-dob">{{calendar.lYear}}<span data-i18n="aboutme.年">年</span>{{calendar.lMonth}}<span data-i18n="aboutme.月">月</span>{{calendar.lDay}}<span data-i18n="aboutme.日"></span> {{dizhi.hour}}<span data-i18n="aboutme.时">时</span></span></span>
+                    </div>
+                </div>
+            </div>
+
+          
+            <div class="row card-display">
+                <div class="col">
+                    <div class="card card-header-info card1">
+                        <div class="card-body ">
+                            <img src="assets/custom/img/horoscope/{{image_astro}}" class="card-img" />
+                            <div>{{astro}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card card-header-info {{css_jisheng}}">
+                        <div class="card-body ">
+                            <img src="assets/custom/img/5elements/{{image_jisheng}}" class="card-img" />
+                            <div>{{jisheng}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <h4 class="block-title first-title"><span data-i18n="aboutme.life-attribute">Life Attribute</span></h4>
+            <div class="block block-item">
+                <div id="life1" class="bar1">
+                    <div class="bar-indicator">
+			        <div class="indicator1">0</div>
+			        <div class="indicator2">60</div>
+                    </div>
+			        <div class="percent">
+				        <span style="width: 100%;"></span>
+			        </div>
+			        <div class="circle1">
+				        <span>0</span>
+			        </div>
+		        </div>
+            </div>
+            <h4 class="block-title"><span data-i18n="aboutme.八字强弱">八字强弱</span></h4>
+            <div class="block block-item">
+                <div id="life2" class="bar1">
+                    <div class="bar-indicator">
+			        <div class="indicator1">-9</div>
+			        <div class="indicator2">9</div>
+                    </div>
+			        <div class="percent">
+				        <span style="width: 100%;"></span>
+			        </div>
+			        <div class="circle1">
+				        <span>-9</span>
+			        </div>
+		        </div>
+            </div>
+            <h4 class="block-title"><span data-i18n="aboutme.lucky-number">Lucky Number</span></h4>
+            <div class="block block-item">
+                {{#each aboutme.lucky_number}}
+                        <img src="assets/custom/img/alphanumeric/{{this}}.png" class="item-img" />
+                
+                    {{/each}}
+            </div>
+            
+            <h4 class="block-title"><span data-i18n="aboutme.lucky-alphabet">Lucky Alphabet</span></h4>
+            <div class="block block-item">
+                {{#each luckyalphabet}}
+                    <img src="assets/custom/img/alphanumeric/{{this}}.png" class="item-img" />
+                {{/each}}
+            </div>
+
+            <h4 class="block-title"><span data-i18n="aboutme.lucky-direction">Lucky Direction</span></h4>
+            <div class="block block-item">
+                <ol>
+                        {{#each aboutme.fangxiang_good}}
+                       
+                            <!--<img src="assets/custom/img/direction/{{this}}.png" class="item-img" />-->
+                           <li> <div class="label"><span data-i18n="aboutme.direction-{{this}}"></span></div></li>
+                       
+                        {{/each}}
+                    </ol>
+            </div>
+
+            <h4 class="block-title"><span data-i18n="aboutme.lucky-color">Lucky Color</span></h4>
+            <div class="block block-item">
+                <!--<table>
+                    <tr>
+                        {{#each color}}
+                        <td align="center">
+                            <svg width="60" height="60">
+                                <rect x="5" y="2" rx="2" ry="2" width="50" height="50"
+                                style="fill:{{this.color}};stroke:black;stroke-width:5;opacity:0.5" />
+                            </svg>
+                            <div class="label"><span data-i18n="aboutme.{{this.element}}"></span></div>
+                        </td>
+                        {{/each}}
+                    </tr>
+                </table>-->
+                <span id="_color"></span>
+            </div>
+        </div>
+
+          <div class="col-xl-6 col-lg-6 col-md-12 col-12" id="divResult" style="display:none"></div>
+	</div>
+</template>
+
+<style scoped>
+    .profile-header {
+        align-items: stretch;
+        /*background-image: linear-gradient(-20deg, var(--oc-color-gray-7) 0%, var(--oc-color-gray-9) 100%);*/
+
+        background: -moz-linear-gradient(to left, rgba(247,0,104,1) 0%, rgba(68,16,102,1) 65%, rgba(68,16,102,1) 100%);
+        background: -webkit-linear-gradient(to left, rgba(247,0,104,1) 0%,rgba(68,16,102,1) 25%,rgba(247,0,104,1) 75%,rgba(68,16,102,1) 100%);
+        background: linear-gradient(to left, rgba(247,0,104) 0%,rgba(68,16,102,1) 65%,rgba(68,16,102,1) 100%);
+
+        box-sizing: border-box;
+        color: #FFFFFF;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0px 16px;
+        text-align: center;
+        width: 100%;
+    }
+
+    .user {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .user-left {
+        margin: 10px 10px 70px;
+    }
+
+    .user img {
+        width: 72px;
+        height: 72px;
+    }
+
+    .card-display {
+        top: -50px;
+        position: relative;
+    }
+    .card-display .col:first-child {
+        padding-left: 15px;
+    }
+
+    .card-display .col:last-child {
+        padding-right: 15px;
+    }
+
+    .row {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    .col {
+        padding-left: 8px;
+        padding-right: 0px;
+    }
+
+
+    .card-header-info {
+        border: 0px;
+        border-radius: 15px;
+    }
+
+    .card-header-info .card-body {
+        padding: 5px;
+        text-align: center;
+        border-color: #707070;
+        font-weight: 600;
+    }
+    
+    .card1 {
+        /*background: linear-gradient(211deg, rgba(190,62,128,1) 0%, rgba(236,116,83,1) 100%);*/
+        border: 2px solid #1a2fea;
+        box-shadow: 0 4px 8px 2px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .card2 {
+        background: linear-gradient(211deg, rgba(26,47,234,1) 0%, rgba(183,83,236,1) 100%);
+    }
+
+    .card2 .card-header-info {
+        color: #fff;
+    }
+
+
+    .card-img {
+        width: 48px;
+        height: 48px;
+        margin: 8px;
+    }
+
+    .user .icon-date {
+        width: 24px;
+        height: 24px;
+    }
+
+    .user-body {
+        margin-top: 10px;
+        flex: 1;
+        text-align: left;
+    }
+
+    .user-dob {
+        font-size: 16px;
+        padding-bottom: 5px;
+        padding-left: 5px;
+    }
+
+    .label {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .first-title {
+        margin-top: -50px;
+    }
+
+    .rounded-circle {
+        border-radius: 50% !important;
+    }
+
+    .img-fluid {
+        max-width: 100%;
+        height: auto;
+        border: 4px solid #FFFFFF;
+    }
+
+    .block-item {
+        margin-bottom: 10px;
+    }
+
+    .card-body {
+        padding: 0.25rem;
+    }
+
+    /* Horizontal Bar */ 
+    
+    .bar1 {
+        /*float:left;*/
+        clear:both;
+        width:100%;
+        height:20px;
+        position:relative;
+    }
+
+    .bar1 .bar-indicator {
+        position:relative;
+        top: -20px;
+    }
+
+    .bar1 .indicator1 {
+	    float:left;
+	    font-size: 14px;
+    }
+
+    .bar1 .indicator2 {
+	    float:right;
+	    font-size: 14px;
+    }
+
+    .bar1 .percent {
+        background:#2caedd;
+        /*background:-moz-linear-gradient(left, #2caedd 0%, #86dd2a 28%, #e0d72a 46%, #e8902c 66%, #ed2d2d 86%, #ff0000 100%);
+        background:-webkit-gradient(linear, left top, right top, color-stop(0%,#2caedd), color-stop(28%,#86dd2a), color-stop(46%,#e0d72a), color-stop(66%,#e8902c), color-stop(86%,#ed2d2d), color-stop(100%,#ff0000));
+        background:-webkit-linear-gradient(left, #2caedd 0%,#86dd2a 28%,#e0d72a 46%,#e8902c 66%,#ed2d2d 86%,#ff0000 100%);
+        background:-o-linear-gradient(left, #2caedd 0%,#86dd2a 28%,#e0d72a 46%,#e8902c 66%,#ed2d2d 86%,#ff0000 100%);
+        background:-ms-linear-gradient(left, #2caedd 0%,#86dd2a 28%,#e0d72a 46%,#e8902c 66%,#ed2d2d 86%,#ff0000 100%);
+        background:linear-gradient(left, #2caedd 0%,#86dd2a 28%,#e0d72a 46%,#e8902c 66%,#ed2d2d 86%,#ff0000 100%);*/
+
+        background: -moz-linear-gradient(to left, rgba(247,0,104,1) 0%, rgba(68,16,102,1) 65%, rgba(68,16,102,1) 100%);
+        background: -webkit-linear-gradient(to left, rgba(247,0,104,1) 0%,rgba(68,16,102,1) 25%,rgba(247,0,104,1) 75%,rgba(68,16,102,1) 100%);
+        background: linear-gradient(to left, rgba(247,0,104) 0%,rgba(68,16,102,1) 65%,rgba(68,16,102,1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2caedd', endColorstr='#ff0000', GradientType=1);
+        /*float:left;*/
+        width:100%;
+        height:20px;
+        /*position:relative;*/
+    }
+
+    .bar1 .percent span {
+        display:block;
+        position:absolute;
+        top:0;
+        right:0;
+        z-index:2;
+        width:100%;
+        height:20px;
+        background:rgba(255, 255, 255, .7);
+    }
+
+    .bar1 .circle1 {
+        display:block;
+        position:absolute;
+        top:50%;
+        left:0;
+        z-index:3;
+        margin:-30px 0 0 -40px;
+        width:60px;
+        height:60px;
+        line-height:60px;
+        text-align:center;
+        font-size:12px;
+        /*font-family:'PT Sans Narrow', sans-serif;*/
+        color:#fff;
+        background:rgba(0, 0, 0, .1);
+        -moz-border-radius:30px;
+        -webkit-border-radius:30px;
+        border-radius:30px;
+        -webkit-transition:all 1s ease;
+        -moz-transition:all 1s ease;
+        -o-transition:all 1s ease;
+    }
+
+    .bar1 .circle1.rotate {
+    -webkit-transform:rotate(1080deg);
+    -moz-transform:rotate(1080deg);
+    -o-transform:rotate(1080deg);
+    }
+
+    .bar1 .circle1 span {
+        display:inline-block;
+        width:50px;
+        height:50px;
+        line-height:50px;
+        background:rgba(0, 0, 0, .3);
+        -moz-border-radius:25px;
+        -webkit-border-radius:25px;
+        border-radius:25px;
+     }
+
+    /*End Horizontal Bar */
+
+    ol {
+        font-weight: 600;
+    }
+
+    .water-bg {
+        background: linear-gradient(to right,  #0000cc 0%,#0000cc 50%,#00ffff 50%,#00ffff 100%);
+    }
+
+    .metal-bg {
+        background: #A0A0A0;
+    }
+
+    .earth-bg {
+        background: linear-gradient(to right,  #663300 0%,#663300 50%,#ffff00 50%,#ffff00 100%);
+    }
+
+    .fire-bg {
+        background: #cc0000;
+    }
+
+    .wood-bg {
+        background: linear-gradient(to right,  #006600 0%,#006600 50%,#66cc00 50%,#66cc00 100%);
+    }
+</style>
+
+<script>
+    return {
+        data: function () {
+            return {
+                client: {}, 
+                aboutme: {}, 
+                luckyalphabet: {},
+                astro: '', 
+                calendar: {},
+                dizhi: {},
+                fuxing: {},
+                color: {},
+                jisheng: '',
+                mingzhufengshu: '',
+                phScale: '',
+                image_astro: '',
+                image_jisheng: '',
+                css_jisheng: ''
+            }
+        },
+        methods: {
+
+        },
+        on: {
+            pageInit: function () {
+
+                
+                var self = this;
+                var Id = self.$route.params.id;
+                var dbList = [];
+                var db;
+
+                dbList = JSON.parse(localStorage.getItem("bazi_list"));
+                db = $.grep(dbList, function(n) {
+                    return n.id == Id;
+                });
+
+                var d = new Date(db[0].dob);
+                var t = db[0].time.split(":");
+
+                var a = {
+                    cYear: d.getFullYear(), //公历年份
+                    cMonth: d.getMonth() + 1, //公历月份
+                    cDay: d.getDate(), //公历日期
+                    hour: t[0],
+                    minute: t[1],
+                    gender: db[0].gender
+                };
+
+                var result = WanNianLi.getResult(a);
+                
+                //console.log(result);
+
+                
+                self.$setState({
+                    client: db[0],
+                    aboutme: result.calculate,
+                    luckyalphabet: result.calculate.alphabet.Good,
+                    astro: i18next.t("aboutme." + result.astro),
+                    image_astro: i18next.t("aboutme." + result.astro + "-image"),
+                    calendar: result.calendar, 
+                    dizhi: result.dizhi, 
+                    fuxing: result.fuxing,
+                    color: result.color.Good,
+                    jisheng: i18next.t("aboutme." + result.tianyunwuxing_elemant.toString()),
+                    image_jisheng: i18next.t("aboutme." + result.tianyunwuxing_elemant.toString() + "-image"),
+                    css_jisheng: i18next.t("aboutme." + result.tianyunwuxing_elemant.toString() + "-css"),
+                    mingzhufengshu: result.mingzhufengshu,
+                    phScale: result.mingzhuqiangruo
+                    
+                });
+
+                
+                var colorHtml = "";
+
+                [].forEach.call(Object.keys(result.color.Good), function (value, index) {
+                    //result += i18next.t("color." + input[value] + action) + "<span class=\"m-l-10\">" + i18next.t("aboutme." + inputwuxing[index] + action) + "</span>" + "<br/>"
+                    
+                    if (result.color.Good[value]["element"] == "木") {
+                        colorHtml += "<svg width=\"60\" height=\"60\"> <rect x=\"5\" y=\"2\" rx=\"2\" ry=\"2\" width=\"50\" height=\"50\" style=\"fill:#006600;stroke:black;stroke-width:5;opacity:0.5\" /> </svg>";
+                        colorHtml += "<svg width=\"60\" height=\"60\"> <rect x=\"5\" y=\"2\" rx=\"2\" ry=\"2\" width=\"50\" height=\"50\" style=\"fill:#66cc00;stroke:black;stroke-width:5;opacity:0.5\" /> </svg>";
+                    } else if (result.color.Good[value]["element"] == "火") {
+                        colorHtml += "<svg width=\"60\" height=\"60\"> <rect x=\"5\" y=\"2\" rx=\"2\" ry=\"2\" width=\"50\" height=\"50\" style=\"fill:#cc0000;stroke:black;stroke-width:5;opacity:0.5\" /> </svg>";
+                        colorHtml += "<svg width=\"60\" height=\"60\"> <rect x=\"5\" y=\"2\" rx=\"2\" ry=\"2\" width=\"50\" height=\"50\" style=\"fill:#ff8000;stroke:black;stroke-width:5;opacity:0.5\" /> </svg>";
+                    } else if (result.color.Good[value]["element"] == "土") {
+                        colorHtml += "<svg width=\"60\" height=\"60\"> <rect x=\"5\" y=\"2\" rx=\"2\" ry=\"2\" width=\"50\" height=\"50\" style=\"fill:#663300;stroke:black;stroke-width:5;opacity:0.5\" /> </svg>";
+                        colorHtml += "<svg width=\"60\" height=\"60\"> <rect x=\"5\" y=\"2\" rx=\"2\" ry=\"2\" width=\"50\" height=\"50\" style=\"fill:#ffff00;stroke:black;stroke-width:5;opacity:0.5\" /> </svg>";
+                    } else if (result.color.Good[value]["element"] == "金") {
+                        colorHtml += "<svg width=\"60\" height=\"60\"> <rect x=\"5\" y=\"2\" rx=\"2\" ry=\"2\" width=\"50\" height=\"50\" style=\"fill:#A0A0A0;stroke:black;stroke-width:5;opacity:0.5\" /> </svg>";
+                    } else if (result.color.Good[value]["element"] == "水") {
+                        colorHtml += "<svg width=\"60\" height=\"60\"> <rect x=\"5\" y=\"2\" rx=\"2\" ry=\"2\" width=\"50\" height=\"50\" style=\"fill:#0000cc;stroke:black;stroke-width:5;opacity:0.5\" /> </svg>";
+                        colorHtml += "<svg width=\"60\" height=\"60\"> <rect x=\"5\" y=\"2\" rx=\"2\" ry=\"2\" width=\"50\" height=\"50\" style=\"fill:#00ffff;stroke:black;stroke-width:5;opacity:0.5\" /> </svg>";
+                        colorHtml += "<svg width=\"60\" height=\"60\"> <rect x=\"5\" y=\"2\" rx=\"2\" ry=\"2\" width=\"50\" height=\"50\" style=\"fill:#000000;stroke:black;stroke-width:5;opacity:0.5\" /> </svg>";
+                    }
+
+                });
+
+                
+                $("#_color").html(colorHtml);
+
+                //Begin Insert Horizontal Bar Value//
+
+                var bar = $('#life1'),
+		            bw = bar.width(),
+		            percent = bar.find('.percent'),
+		            circle = bar.find('.circle1'),
+		            ps =  percent.find('span'),
+		            cs = circle.find('span'),
+		            name = 'rotate';
+
+                var val = result.mingzhufengshu;
+                
+                if ((val >=0 && val <= 60)){
+                    var a;
+                    
+                    a = (val / 60) * 100;
+					
+                    var w = 100-a, pw = (bw*w)/100,
+                        pa = {
+                            width: w+'%'
+                        },
+                        cw = (bw-pw)
+
+                    if (cw > (bw-10)){
+                        cw = bw-10
+                    }
+
+                   var ca = {
+                            left: cw
+                        }
+                    ps.animate(pa);
+                    cs.text(val);
+                    circle.animate(ca, function(){
+                        circle.removeClass(name)
+                    }).addClass(name);
+                    
+                   
+                } else {
+                    alert('range: 0 to 60');
+                }
+
+
+                var bar = $('#life2'),
+		            bw = bar.width(),
+		            percent = bar.find('.percent'),
+		            circle = bar.find('.circle1'),
+		            ps =  percent.find('span'),
+		            cs = circle.find('span'),
+		            name = 'rotate';
+
+                var val = result.mingzhuqiangruo;
+                
+                if ((val >=-9 && val <= 9)){
+                    var a;
+                    if (val >= 0) {
+                        a = 50 + ( (val / 9 ) * 50);
+                    } else {
+                        a = ( ((9 + parseFloat(val)) / 9 ) * 50);
+                    }
+					
+                    //console.log(a, val, (9 + parseFloat(val)) / 9);
+                    var w = 100-a, pw = (bw*w)/100,
+                        pa = {
+                            width: w+'%'
+                        },
+                        cw = (bw-pw)
+
+                    if (cw > (bw-10)){
+                        cw = bw-10
+                    }
+
+                    var ca = {
+                        left: cw
+                    }
+                    ps.animate(pa);
+                    cs.text(val);
+                    circle.animate(ca, function(){
+                        circle.removeClass(name)
+                    }).addClass(name);	
+                } else {
+                    alert('range: -9 to 9');
+                }
+
+                //End Insert Horizontal Bar Value//
+                
+              }
+        }
+    }
+</script>

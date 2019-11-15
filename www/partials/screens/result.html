@@ -1,0 +1,266 @@
+﻿<template>
+<div class="page no-toolbar" data-name="result">
+
+		<div class="navbar">
+			<div class="navbar-inner">
+                <div class="left">
+					<a href="#" class="link back">
+						<i class="icon icon-back"></i>
+						<span class="ios-only" data-i18n="back">Back</span>
+					</a>
+				</div>
+				<div class="title md-only" data-i18n="calculator">Result</div>
+				<div class="subnavbar ios-only">
+					<div class="subnavbar-inner">
+						<div class="title" data-i18n="calculator">Result</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="page-content hide-navbar-on-scroll">
+            <div class="profile-header">
+				<!--<img class="user-avatar" src="assets/custom/img/boy.svg" alt="" />
+				<div class="user-name">Topias Kantola</div>
+				<div class="user-actions row">
+					<button class="col button button-big button-fill bg-color-red-5">Follow</button>
+					<button class="col button button-big button-fill bg-color-teal-5">Message</button>
+				</div>-->
+
+
+                <div class="user">
+                    <div class="user-left">
+                    <img src="assets/custom/img/boy.svg" class="img-fluid rounded-circle" alt="user profile"></div>
+                    <div class="user-body">
+                        <h4>Andre Hicks</h4>
+                        <span class="d-block"><img src="assets/custom/img/calendar.png" class="icon-date" /><span class="user-dob">2016-10-27 17:00</span></span>
+                        <span class="d-block"><img src="assets/custom/img/lunarcalendar.png" class="icon-date" /><span class="user-dob">1983年九月廿二戊时 星期四</span></span>
+                    </div>
+                </div>
+			</div>
+			
+            <div class="row card-display">
+				<div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <img src="assets/custom/img/horoscope/aquarius.png" class="card-img" />
+                            <div class="label">Aquarius<span class="label-sub">&nbsp;</span></div>
+                        </div>
+                    </div>
+				</div>
+				<div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <img src="assets/custom/img/horoscope/pisces.png" class="card-img" />
+                            <div class="label">Aquarius<span class="label-sub">&nbsp;</span></div>
+                        </div>
+                    </div>
+				</div>
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <img src="assets/custom/img/horoscope/pisces.png" class="card-img" />
+                            <div class="label">Wood<span class="label-sub"> Strong (55)</span></div>
+                        </div>
+                    </div>
+				</div>
+			</div>
+            <h4 class="block-title first-title">5 Element</h4>
+            <div class="block block-item">
+                <img src="assets/custom/img/calendar.png" class="item-img item-good" />
+                <img src="assets/custom/img/horoscope/aquarius.png" class="item-img item-good" />
+                <img src="assets/custom/img/calendar.png" class="item-img item-good" />
+                
+            </div>
+            <div class="block block-item">
+                <img src="assets/custom/img/calendar.png" class="item-img item-bad" />
+                <img src="assets/custom/img/horoscope/aquarius.png" class="item-img item-bad" />
+            </div>
+            <h4 class="block-title">Number</h4>
+            <div class="block block-item">
+                <img src="assets/custom/img/calendar.png" class="item-img item-good" />
+                <img src="assets/custom/img/horoscope/aquarius.png" class="item-img item-good" />
+                <img src="assets/custom/img/calendar.png" class="item-img item-good" />
+                
+            </div>
+            <div class="block block-item">
+                <img src="assets/custom/img/calendar.png" class="item-img item-bad" />
+                <img src="assets/custom/img/horoscope/aquarius.png" class="item-img item-bad" />
+            </div>
+            <h4 class="block-title">Alphabet</h4>
+             <div class="block block-item">
+                <img src="assets/custom/img/calendar.png" class="item-img item-good" />
+                <img src="assets/custom/img/horoscope/aquarius.png" class="item-img item-good" />
+                <img src="assets/custom/img/calendar.png" class="item-img item-good" />
+                
+            </div>
+            <div class="block block-item">
+                <img src="assets/custom/img/calendar.png" class="item-img item-bad" />
+                <img src="assets/custom/img/horoscope/aquarius.png" class="item-img item-bad" />
+            </div>
+            <h4 class="block-title">Direction</h4>
+             <div class="block block-item">
+                <img src="assets/custom/img/calendar.png" class="item-img item-good" />
+                <img src="assets/custom/img/horoscope/aquarius.png" class="item-img item-good" />
+                <img src="assets/custom/img/calendar.png" class="item-img item-good" />
+                
+            </div>
+            <div class="block block-item">
+                <img src="assets/custom/img/calendar.png" class="item-img item-bad" />
+                <img src="assets/custom/img/horoscope/aquarius.png" class="item-img item-bad" />
+            </div>
+		</div>
+
+	</div>
+</template>
+<style scoped>
+	.profile-header {
+		align-items: stretch;
+		background-image: linear-gradient(-20deg, var(--oc-color-gray-7) 0%, var(--oc-color-gray-9) 100%);
+		box-sizing: border-box;
+		color: #FFFFFF;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding: 0px 16px;
+		text-align: center;
+		width: 100%;
+	}
+
+    .user {
+        display: flex;
+        align-items: flex-start;
+    }
+    .user-left {
+        margin: 20px 10px 70px;
+    }
+    .user img {
+        width: 72px;
+        height: 72px;
+    }
+
+    .card-display .col:first-child {
+        padding-left: 15px;
+    }
+    .card-display .col:last-child {
+        padding-right: 15px;
+    }
+
+    .col {
+        padding-left: 8px;
+        padding-right: 0px;
+    }
+    .card-body {
+        padding: 5px;
+        text-align:center;
+    }
+
+
+    .card-img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50% !important;
+        border: 1px solid #00b1f2;
+        padding: 5px;
+    }
+
+    .label {
+        font-size: 14px;
+        font-weight:600;
+    }
+
+    .label-sub {
+        display: block;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .first-title {
+        margin-top: -30px;
+    }
+    .rounded-circle {
+        border-radius: 50% !important;
+    }
+
+    .img-fluid {
+        max-width: 100%;
+        height: auto;
+        border: 4px solid #FFFFFF;
+    }
+
+    .user .icon-date {
+        width: 24px;
+        height: 24px;
+    }
+
+    .user-body {
+        margin-top: 30px;
+        flex: 1;
+        text-align:left;
+    }
+
+    .user-dob {
+        font-size: 16px;
+        padding-bottom: 5px;
+        padding-left: 5px;
+    }
+
+    .card {
+        top: -40px;
+    }
+
+    
+
+    
+
+    .block-item {
+        margin-top: 0px;
+        margin-bottom: 10px;
+    }
+    .item-img {
+        width: 50px;
+        height: 50px;
+        padding: 5px;
+    }
+
+    .item-good {
+        border-radius: 50% !important;
+        border: 1px solid #b8f2bd;
+        background: #ccf6d0 linear-gradient(180deg, #d2f6d6, #ccf6d0) repeat-x;
+    }
+
+    .item-bad {
+        border-radius: 50% !important;
+        border: 1px solid #ffc7c8;
+        background: #ffd7d7 linear-gradient(180deg, #fddcdc, #ffd7d7) repeat-x;
+    }
+
+</style>
+<script>
+    return {
+        data: function () {
+            return {
+                calendar_range: {},
+                classes: {},
+                view_date: ''
+            }
+        },
+        methods: {
+            
+        },
+        on: {
+            pageInit: function () {
+                var self = this;
+                
+                var Id = self.$route.params.id;
+                var db;
+                db = $.grep(app.data.db_list, function(n) {
+                    return n.id == Id; 
+                });
+                //console.log(Id, db, db[0].dob, app);
+                //console.log(app.view.current.router, app.views.current.history);
+                
+              }
+        }
+    }
+</script>

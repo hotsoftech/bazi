@@ -1,0 +1,310 @@
+﻿<template>
+    <div class="page no-toolbar" data-name="direction">
+
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="left">
+                    <a href="#" class="link back">
+                        <i class="icon icon-back"></i>
+                        <span class="ios-only" data-i18n="global.back">Back</span>
+                    </a>
+                </div>
+                <div class="title" data-i18n="form.direction">Direction</div>
+            </div>
+        </div>
+
+
+		<div class="page-content">
+                <div id="divResult" style="display:none">
+
+                    <h4 class="block-title first-title"><span data-i18n="direction.suitable-direction">My Suitable Direction</span></h4>
+                    <div class="block block-item">
+                        <ol>
+                        {{#each lucky_direction}}
+                            <li><span class="label"><span data-i18n="aboutme.direction-{{this}}"></span></span></li>
+                        {{/each}}
+                        </ol>
+                    </div>
+                    <h4 class="block-title"><span data-i18n="direction.notsuitable-direction">My not Suitable Direction</span></h4>
+                    <div class="block block-item">
+                        <ol>
+                        {{#each notlucky_direction}}
+                            <li><span class="label"><span data-i18n="aboutme.direction-{{this}}"></span></span></li>
+                        {{/each}}
+                        </ol>
+                    </div>
+                    <h4 class="block-title"><span data-i18n="direction.remark">Remark</span></h4>
+                    <div class="block block-item">
+                        <ol class="text-justify">
+                        {{#each remark_message}}
+                            <li><span class="label">{{this}}</span></li>
+                        {{/each}}
+                        </ol>
+                    </div>
+                </div>
+            
+            <form name="direction-form" id="direction-form" class="ck-form" >
+                <div class="list no-hairlines no-hairlines-between">
+                <ul>
+                  <li class="item-content item-input">
+                    <div class="item-inner">
+                      <label for="form-name" class="item-title item-label" data-i18n="direction.degree">Direction Degree</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-compass"></i></span>
+                          </div>
+                          <input type="number" class="form-control" id="form-preferdegree" name="form-preferdegree" required>
+                          <span class="input-clear-button"></span>
+                        </div>
+                        <div class="input-error-message" id="invalid-form-preferdegree"></div>
+                    </div>
+                  </li>
+                </ul>
+                </div>
+                <div class="block">
+				    <a class="button button-big button-fill red-button" @click="matching(this);" data-i18n="alphabet.match" id="direction-submit">Match</a>
+			    </div>
+            </form>
+	</div>
+</template>
+<style scoped>
+    .first-title {
+        margin-top: 10px;
+    }
+
+    .label {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    ol {
+        font-weight: 600;
+    }
+</style>
+<script>
+    return {
+        data: function () {
+            return {
+                lucky_direction: {},
+                notlucky_direction: {},
+                remark_message: {}
+            }
+        },
+        methods: {
+            initializeFormValidator: function(self) {
+
+                $('#direction-form').on('focus', ':input', function () {
+                    $(this).attr('autocomplete', 'off');
+                });
+
+                $("#direction-form").validate({
+                    rules: {
+                        "form-preferdegree": {
+                            required: true,
+                            pattern: "[0-9]*",
+                            min: 0,
+                            max: 360,
+                        }
+                    },
+                    messages: {
+                        "form-preferdegree": {
+                            required: i18next.t("form.emptyerror"),
+                            min: i18next.t("direction.min-value") + "{0}",
+                            max: i18next.t("direction.max-value") + "{0}",
+                            pattern: i18next.t("direction.pattern-invalid"),
+                            number:  i18next.t("number.invalid-number"),
+                        }
+                    },
+                    errorPlacement: function(error, element) {
+                        error.appendTo('#invalid-' + element.attr('id'));
+                    },
+                });
+
+                $('#direction-form').submit(function () {
+                    self.matching();
+                    //console.log(self);
+                    return false;
+                });
+
+            },
+            matching: function () {
+                var self = this;
+                
+                if ($("#direction-form").valid()) {
+                    var number = $("#form-preferdegree").val();
+                    if (number != '') {
+                        var directions = self.lucky_direction || [];
+                        var directions_bad = self.notlucky_direction || [];
+                        var flag = "";
+                        var good_index = 0, bad_index = 0;
+     
+                        console.log(number, directions, self.notlucky_direction);
+                        if ((number > 337.5 && number <= 360) || (number >=0 && number <= 22.5)) {
+                            good_index = directions.indexOf("N");
+                            bad_index = directions_bad.indexOf("N");
+                        } else if (number > 22.5 && number <= 67.5) {
+                            good_index = directions.indexOf("NE");
+                            bad_index = directions_bad.indexOf("NE");
+                        } else if (number > 67.5 && number <= 112.5) {
+                            good_index = directions.indexOf("E");
+                            bad_index = directions_bad.indexOf("E");
+                        } else if (number > 112.5 && number <= 157.5) {
+                            good_index = directions.indexOf("SE");
+                            bad_index = directions_bad.indexOf("SE");
+                        } else if (number > 157.5 && number <= 202.5) {
+                            good_index = directions.indexOf("S");
+                            bad_index = directions_bad.indexOf("S");
+                        } else if (number > 202.5 && number <= 247.5) {
+                            good_index = directions.indexOf("SW");
+                            bad_index = directions_bad.indexOf("SW");
+                        } else if (number > 247.5 && number <= 292.5) {
+                            good_index = directions.indexOf("W");
+                            bad_index = directions_bad.indexOf("W");
+                        } else if (number > 292.5 && number <= 337.5) {
+                            good_index = directions.indexOf("NW");
+                            bad_index = directions_bad.indexOf("NW");
+                        } else {
+                            flag = "";
+                        };
+                        console.log(good_index, bad_index);
+                        self.showResultDialog(good_index, bad_index);
+                    }
+                }
+            },
+            showResultDialog: function (goodIndex, badIndex) {
+
+                var gauge;
+
+                var dialog = app.dialog.create({
+                    title: i18next.t("global.result"),
+                    content: '<div class="gauge gauge-semicircle mt-3"></div>',
+                    cssClass: "result-dialog text-center",
+                    buttons: [
+                        {
+                            text: "OK",
+                            bold: true,
+                            color: 'black',
+                        }
+                    ],
+                    on: {
+                        open: function (popup) {
+                            
+                        },
+                        opened: function (popup) {
+                            
+                            var matchValue = 0;
+                            var returnMessage = "";
+                            if (goodIndex > 0) {
+                                matchValue = (goodIndex * 25) + 25;
+                                returnMessage = i18next.t("direction.good-direction")
+                            } else if (badIndex > 0) {
+                                matchValue = (badIndex * 25) + 25;
+                                returnMessage = i18next.t("direction.bad-direction")
+                            } else {
+                                matchValue = 0;
+                                returnMessage = i18next.t("direction.not-found")
+                            }
+                            
+                            matchP = matchValue * 0.01; 
+
+                            gauge = app.gauge.create({
+                                el: '.gauge-semicircle',
+                                type: 'semicircle',
+                                value: matchP,
+                                borderBgColor: '#f70068',
+                                borderColor: '#441066',
+                                borderWidth: 12,
+                                valueText: matchValue + '%',
+                                valueTextColor: '#441066',
+                                labelFontSize: 18,
+                                labelTextColor: '#f70068',
+                                labelText: returnMessage
+                            });
+                        },
+                        close: function(popup) {
+                            app.gauge.destroy(".gauge-semicircle");
+                        }
+                    }
+                });
+
+                
+
+                dialog.open();
+            }
+            
+        },
+        on: {
+            pageInit: function () {
+                var self = this;
+
+                var Id = self.$route.params.id;
+                var db;
+                var dbList = [];
+
+                dbList = JSON.parse(localStorage.getItem("bazi_list"));
+                db = $.grep(dbList, function(n) {
+                    return n.id == Id;
+                });
+
+
+                var d = new Date(db[0].dob);
+                var t = db[0].time.split(":");
+
+                var b = {
+                    cYear: d.getFullYear(), //公历年份
+                    cMonth: d.getMonth() + 1, //公历月份
+                    cDay: d.getDate(), //公历日期
+                    gender: db[0].gender
+                };
+
+                var calresult = calculator.getResult(b);
+                console.log(calresult);
+                $("#divResult").show();
+
+                self.initializeFormValidator(self);
+
+
+                self.$setState({
+                    lucky_direction: calresult.fangxiang_good,
+                    notlucky_direction: calresult.fangxiang_bad,
+                    remark_message: i18next.t("direction.remark-data").split(";")
+                });
+
+                console.log(i18next.t("direction.remark-data"), self.remark_message);
+
+              }
+        }
+    }
+
+    function showSuccessAlertDialog () {
+        var dialog = app.dialog.create({
+            title: i18next.t("form.direction"),
+            content: '<div class="block no-margin margin-top text-align-center"><i class="far fa-4x fa-smile text-color-green"></i></div>',
+            cssClass: "result-dialog",
+            buttons: [
+                {
+                    text:  i18next.t("alphabet.match") ,
+                    bold: true,
+                    color: 'green'
+                }
+            ]
+        });
+        dialog.open();
+    }
+
+    function showDangerAlertDialog() {
+        var dialog = app.dialog.create({
+            title: i18next.t("form.direction"),
+            content: '<div class="block no-margin margin-top text-align-center"><i class="far fa-4x fa-frown text-color-red"></i></div>',
+            cssClass: "result-dialog",
+            buttons: [
+                {
+                    text: i18next.t("alphabet.unmatch"),
+                    bold: true,
+                    color: 'red',
+                }
+            ]
+        });
+        dialog.open();
+    }
+</script>

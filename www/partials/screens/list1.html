@@ -1,0 +1,145 @@
+﻿<template>
+<div class="page no-swipeback no-navbar" data-name="list">
+		<div class="page-content ptr-content " data-ptr-distance="55" @ptr:refresh="refreshList">
+            <div class="ptr-preloader">
+                <div class="preloader"></div>
+                <div class="ptr-arrow"></div>
+            </div>
+           
+             {{#if $root.db_list}}
+                
+            <div class="list media-list">
+            <ul id="ul_db">
+           
+                {{#each $root.db_list}}
+
+			    <li class="swipeout deleted-callback">
+                    <div class="item-content swipeout-content" data-id="{{this.id}}">
+                        <div class="item-media">
+                            <img {{#js_if "this.gender == 'M'"}} src="assets/custom/img/boy.svg" class="db-gender gradient-sky-dark shadow-large" {{else}} src="assets/custom/img/girl.svg" class="db-gender gradient-green-dark shadow-large" {{/js_if}}  />
+                        </div>
+                        <div class="item-inner">
+                            <div class="item-title-row">
+							    <div class="item-title">{{this.name}}</div>
+						    </div>
+						    <div class="item-subtitle">{{this.dob}}&nbsp;&nbsp;{{this.time}}</div>
+                        </div>
+                    </div>
+                     <div class="swipeout-actions-right">
+                        <a data-id="{{this.id}}" class="swipeout-delete bg-color-red-8" data-i18n="global.delete" data-close-on-cancel="true" >Delete</a>
+                    </div>
+                </li>
+             {{/each}}
+             </ul>
+             </div>
+            </div>
+			{{/if}}
+
+		
+
+	</div>
+</template>
+<style scoped>
+    .db-gender {
+        height: 48px;
+        border-radius: 25px;
+        padding: 3px 0px;
+    }
+    .swipeout-delete {
+        background: #f76b71;
+        background: -moz-linear-gradient(top, #f76b71 1%, #de2125 100%);
+        background: -webkit-linear-gradient(top, #f76b71 1%,#de2125 100%);
+        background: linear-gradient(to bottom, #f76b71 1%,#de2125 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f76b71', endColorstr='#de2125',GradientType=0 );
+        color:#fff!important;
+    }
+
+    .shadow-large {
+        box-shadow: 0 20px 67px 0 rgba(0,0,0,.12),0 5px 14px 0 rgba(0,0,0,.2)!important;
+    }
+
+    .gradient-sky-dark {
+        background-image: linear-gradient(180deg,#4690f0 0,#2a5da3 100%);
+    }
+    .gradient-green-dark {
+        background-image: linear-gradient(180deg,#9acb66 0,#6e9b3d 100%);
+    }
+
+
+    .ios {{this}} .item-title {
+        color: #000;
+        font-size: 19px;
+        font-weight: 500;
+        margin-bottom: 3px;
+    }
+    .md {{this}} .item-title {
+        color: #000;
+        font-size: 19px;
+        font-weight: 500;
+        margin-bottom: 3px;
+    }
+
+    .list {
+        margin: 0;
+    }
+    .list ul:before {
+        background-color: #FFFFFF;
+    }
+    .list ul:after {
+        background-color: #FFFFFF;
+    }
+
+    .list .item-subtitle {
+        font-size: 16px;
+        font-weight: 500;
+        color: #a6a6ab;
+    }
+    
+
+</style>
+<script>
+    return {
+        data: function() {
+            return {
+               
+            }
+        },
+        methods: {
+            refreshList: function (e) {
+                var self = this;
+                self.$setState({
+                    
+                });
+                setTimeout(function () {
+                    app.ptr.done(); 
+                }, 1000);
+            }
+        },
+        on: {
+            
+            pageInit: function() {
+                var self = this;
+               
+                $(".swipeout-delete").on("click",function() {
+                    dbList = JSON.parse(localStorage.getItem("bazi_list"));
+                    var index = $(this).data("id");
+
+                    dbList = $.grep(dbList, function(n) {
+                        return n.id != index; 
+                    });
+                  
+                    localStorage.setItem("bazi_list",JSON.stringify(dbList));
+                    app.dialog.alert('Thanks, item removed!');
+                });
+
+
+                $('#ul_db .item-content').on('click', function(){
+                    var id = $(this).data("id");
+                    app.view.current.router.navigate('/selection/' + id)
+                })
+
+            }
+        }
+
+    }
+</script>

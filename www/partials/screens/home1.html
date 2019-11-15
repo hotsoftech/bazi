@@ -1,0 +1,258 @@
+﻿<template>
+	<div class="page no-swipeback no-navbar" data-name="home">
+		<div class="page-content">
+            <div class="discover-gradient">
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none"><polygon fill="#F7F8FA" points="0,100 100,0 100,100"></polygon></svg>
+            </div>
+            <div class="block">
+                <div class="title-container font-white">
+                    <div class="title-with-link">
+                    <h1><span data-i18n="form.discover">Discover</span></h1>
+                    </div>
+                    <span class="title-date" data-i18n="form.subtitle">Please fill in name, date of birth and gender</span>
+                </div>
+            </div>
+            <form name="my-form" id="my-form" class="ck-form">
+            <div class="list no-hairlines no-hairlines-between">
+                <ul>
+                  <li class="item-content item-input">
+                    <div class="item-inner">
+                      <label for="form-name" class="item-title item-label" data-i18n="form.name">Name</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                          </div>
+                          <input type="text" class="form-control" id="form-name" name="form-name" required>
+                          <span class="input-clear-button"></span>
+                        </div>
+                        <div class="input-error-message" id="invalid-form-name"></div>
+                    </div>
+                  </li>
+                  <li class="item-content item-input">
+                    <div class="item-inner">
+                      <label for="form-dob" class="item-title item-label" data-i18n="form.dob">DOB</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                          </div>
+                          <input type="date" class="form-control" id="form-dob" name="form-dob" data-i18n="[placeholder]form.mm-dd-yyyy" required>
+                        </div>
+                        <div class="input-error-message" id="invalid-form-dob"></div>
+                    </div>
+                  </li>
+                  <li class="item-content item-input">
+                    <div class="item-inner">
+                      <label for="form-time" class="item-title item-label" data-i18n="form.dob-time">DOB Time</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                          </div>
+                          <input type="time" class="form-control" id="form-time" name="form-time" required>
+                        </div>
+                        <div class="input-error-message" id="invalid-form-time"></div>
+                    </div>
+                  </li>
+                  <li class="item-content item-input">
+                    <div class="item-inner">
+                      <label for="form-gender" class="item-title item-label" data-i18n="form.gender">Gender</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+                          </div>
+                          <select id="form-gender" name="form-gender" class="form-control" >
+                            <option value="M" data-i18n="form.male"></option>
+                            <option value="F" data-i18n="form.female"></option>
+                          </select>
+                        </div>
+                        <div class="input-error-message" id="invalid-form-gender"></div>
+                    </div>
+                  </li>
+                </ul>
+			</div>
+            <div class="block">
+				<a class="button button-big button-fill red-button" @click="save_cal(this);" data-i18n="form.save-calculate" id="form-submit">Save & Calculate</a>
+			</div>
+            </form>
+            <!--<span class="icon icon-circle-blue wow fadeIn animated" style="visibility: visible; animation-name: fa-spin;"></span>-->
+            
+		</div>
+        
+	</div>
+</template>
+
+<style scoped>
+   .icon-circle-blue {
+        right: -150px;
+        bottom: 50px;
+        opacity: .70;
+        -webkit-animation: fa-spin 30s infinite;
+        -moz-animation: fa-spin 30s infinite;
+        -ms-animation: fa-spin 30s infinite;
+        -o-animation: fa-spin 30s infinite;
+        animation: fa-spin 30s infinite;
+    }
+    
+    .icon {
+        position: absolute;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+   .icon-circle-blue {
+        width: 300px;
+        height: 300px;
+        background-image: url(img/circle-blue.png);
+    }
+
+    
+    .discover-gradient {
+        width: 100%;
+        height: 200px;
+        position: absolute;
+        background: #8705f0;
+        background: linear-gradient(to bottom, #ff2e54, #c519e4);
+        /*background: linear-gradient(to bottom right, #D54381, #7644AD);*/
+    }
+
+    .discover-gradient svg {
+        position: absolute;
+        bottom: 0;
+        width: calc(100%);
+        height: 70px;
+        
+    }
+
+    .font-white {
+        color: #fff;
+    }
+
+    .ios {{this}} .block {
+        margin: 0;
+        padding: 0 20px;
+        color: #8A8A8F;
+    }
+
+     .title-container {
+        margin: 30px 0 10px;
+    }
+
+   .title-date {
+       color: rgba(255, 255, 255, 0.6);
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .title-container.white h1 {
+    color: #fff;
+}
+
+    .title-container.white i {
+    color: #fff;
+    font-size: 35px;
+}
+
+    .block {
+        margin: 0px;
+    }
+
+    .md .tabbar .tab-link-highlight, .md .tabbar-labels .tab-link-highlight {
+        background: linear-gradient(to bottom right, #ff2e54, #c519e4);
+    }
+</style>
+
+<script>
+    return {
+        data: function() {
+			
+        },
+        methods: {
+            initializeFormValidator: function(self) {
+
+                $('#my-form').on('focus', ':input', function () {
+                    $(this).attr('autocomplete', 'off');
+                });
+
+                $("#my-form").validate({
+                    rules: {
+                        "form-name": "required",
+                        "form-dob": {
+                            required: true
+                        },
+                        "form-time": {
+                            required: true
+                        },
+                    },
+                    messages: {
+                        "form-name": i18next.t("form.emptyerror"),
+                        "form-dob": i18next.t("form.emptyerror"),
+                        "form-time": {
+                            required: i18next.t("form.emptyerror")
+                        }
+                    },
+                    errorPlacement: function(error, element) {
+                        console.log(error, element);
+                        error.appendTo('#invalid-' + element.attr('id'));
+                    },
+                });
+
+
+                $('#my-form').submit(function () {
+                    self.save_cal();
+                    return false;
+                });
+
+            },
+		    
+			
+            clearForm: function() {
+                $("#form-name").val("");
+                $("#form-dob").val("");
+                $("#form-time").val("");
+                $("#form-gender").val("M");
+            },
+            save_cal: function () {
+                var formData = app.form.convertToData('#my-form');
+                var dbList = [];
+                dbList = JSON.parse(localStorage.getItem("bazi_list"));
+                var data = {};
+
+                if ($("#form-name").valid() && $("#form-dob").valid() && $("#form-time").valid()) {
+                    data["id"] = app.utils.id();
+                    data["name"] = $("#form-name").val();
+                    data["dob"] = $("#form-dob").val();
+                    data["time"] = $("#form-time").val();
+                    data["gender"] = $("#form-gender").val();
+                    if (dbList == null) {
+                        dbList = [];
+                    }
+                    dbList.push(data);
+                    localStorage.setItem("bazi_list",JSON.stringify(dbList));
+                    app.data.db_list = dbList;
+                    console.log(app.data.db_list,"app.data.db_list");
+                    this.clearForm();
+                    app.view.current.router.navigate('/selection/' + data["id"]);
+                }
+                //return false;
+            }
+        },
+        on: {
+            pageInit: function() {
+                var self = this;
+                self.initializeFormValidator(self);
+		        
+                //var notificationClickToClose = app.notification.create({
+                //    title: 'Framework7',
+                //    titleRightText: 'now',
+                //    subtitle: 'Notification with close on click',
+                //    text: 'Click me to close',
+                //    closeOnClick: true,
+                //})
+
+                //notificationClickToClose.open();
+
+
+		     
+            },
+        }
+    }
+</script>

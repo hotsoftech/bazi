@@ -1,0 +1,281 @@
+﻿<template>
+    <div class="page no-toolbar" data-name="color">
+
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="left">
+                    <a href="#" class="link back">
+                        <i class="icon icon-back"></i>
+                        <span class="ios-only" data-i18n="global.back">Back</span>
+                    </a>
+                </div>
+                <div class="title md-only" data-i18n="form.color">Color</div>
+                <div class="subnavbar ios-only">
+                    <div class="subnavbar-inner">
+                        <div class="title" data-i18n="form.color">Color</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+		<div class="page-content">
+           <!-- <div class="row justify-content-md-center">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-12" id="divResult" style="display:none">-->
+                    <div class="header-title" data-i18n="color.命盘">命盘</div>
+                    <div class="card card-info">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <span id="_mingban"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-title" data-i18n="color.五行">五行</div>
+                    <h4 class="block-title sub-title" data-i18n="color.阴阳指数"><span>阴阳指数</span></h4> 
+                    <div class="block block-item">
+                    <div class="yinyang"><div class="yin">{{yin_ratio}}%<div><span data-i18n="color.阴">阴</span></div></div><div class="yang">{{yang_ratio}}%<div><span data-i18n="color.阳">阳</span></div></div></div>
+                    </div>
+                    <div class="card card-info">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <span id="_wuxing"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-title" data-i18n="color.大运">大运</div>
+                    <div class="card card-info">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <span id="_dayun"></span>
+                                <br/><br />
+                                <span id="_xianghexiangke"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                <!--</div>
+            </div>-->
+		</div>
+
+	</div>
+</template>
+
+<style scoped>
+    
+    .sub-title {
+        margin-top: 0px;
+        color: #313338;
+        font-weight: 600;
+        margin-bottom:2px;
+    }
+
+    .yinyang{
+      position:relative;
+      width: 100%;
+      height:20px;
+      color: #000;
+      font-size: 14px;
+    }
+    .yin {
+      text-align:center;
+      vertical-align: middle;
+      float:left;
+      height: 20px;
+      line-height: 20px;
+      background-color: #F7CE68;
+        background-image: linear-gradient(90deg, #F7CE68 0%, #FBAB7E 100%);
+      border-radius: 10px 0 0 10px;
+    }
+
+    .yang {
+        text-align:center;
+        float:right;
+        height: 20px;
+        line-height: 20px;
+        background-color: #8BC6EC;
+        background-image: linear-gradient(90deg, #8BC6EC 0%, #9599E2 100%);
+        border-radius: 0px 10px 10px 0px
+    }
+
+    .yin div{
+      text-align:left;
+      font-size: 16px;
+      color: #000;
+      padding-left: 2px;
+    }
+
+    .yang div {
+      text-align:right;
+      font-size: 16px;
+      color: #000;
+      padding-right: 2px;
+    }
+
+    {{this}} .dayun th {
+        font-size: 12px;
+    }
+    {{this}} .dayun td {
+        font-size: 12px;
+    }
+</style>
+<script>
+    return {
+        data: function () {
+            return {
+                client: {},
+                yin_ratio:0,
+                yang_ratio:0,
+            }
+        },
+        methods: {
+            
+        },
+        on: {
+            pageInit: function () {
+                var self = this;
+
+                var Id = self.$route.params.id;
+                var db;
+                db = $.grep(app.data.db_list, function(n) {
+                    return n.id == Id;
+                });
+
+
+                var d = new Date(db[0].dob);
+                var t = db[0].time.split(":");
+
+                var a = {
+                    cYear: d.getFullYear(), //公历年份
+                    cMonth: d.getMonth() + 1, //公历月份
+                    cDay: d.getDate(), //公历日期
+                    hour: t[0],
+                    minute: t[1],
+                    gender: db[0].gender
+                };
+
+                var result = WanNianLi.getResult(a);
+                console.log(result, result.yinyang.ratio["yin"], result.yinyang.ratio["yang"], "color");
+                self.$setState({
+                    yin_ratio: result.yinyang.ratio["yin"],
+                    yang_ratio: result.yinyang.ratio["yang"],
+                });
+
+                $(".yin").width(result.yinyang.ratio["yin"] + "%");
+                $(".yang").width(result.yinyang.ratio["yang"] + "%");
+
+                $("#divResult").show();
+
+                function getCangganOutput(input, inputwuxing) {
+                    var result = "";
+                    [].forEach.call(Object.keys(input), function (value, index) {
+                        result += i18next.t("color." + input[value]) + "<span class=\"m-l-10\">" + i18next.t("aboutme." + inputwuxing[index]) + "</span>" + "<br/>"
+                    });
+                    return result;
+                }
+
+                function getFuXingOutput(input) {
+                    var result = "";
+                    [].forEach.call(Object.keys(input), function (value, index) {
+                        result += i18next.t("color." + input[value]) + "<br/>"
+                    });
+                    return result;
+                }
+
+                function getWuXingShiSheng(input) {
+                    var result = "";
+                    [].forEach.call(Object.keys(input), function (value, index) {
+                        result +=  i18next.t("color." + value) + " " + input[value] + " "
+                    });
+                    return result;
+                }
+    
+                var _mingban_result;
+                _mingban_result = "<table class=\"table mb-0\"> <thead><tr> <th></th> <th>" + i18next.t("color.年柱") + "</th> <th>" + i18next.t("color.月柱") + "</th> <th>" + i18next.t("color.日柱") + "</th> <th>" + i18next.t("color.时柱") + "</th> </tr> </thead> <tbody> "
+                _mingban_result += "<tr class=\"table-active\"><th class=\"table-col-title\">" + i18next.t("color.主星") + "</th><td>" + i18next.t("color." + result.zhuxing.year) + "</td><td>" + i18next.t("color." + result.zhuxing.month) + "</td><td class=\"text-danger\">" + i18next.t("color." + result.zhuxing.date) + "</td><td>" + i18next.t("color." + result.zhuxing.hour) + "</td></tr>";
+                _mingban_result += "<tr class=\"\"><th class=\"table-col-title\">" + i18next.t("color.天干") + "</th><td>" +  i18next.t("color." + result.tiangan.year) + "</td><td>" +  i18next.t("color." + result.tiangan.month) + "</td><td>" +  i18next.t("color." + result.tiangan.date) + "</td><td>" +  i18next.t("color." + result.tiangan.hour) + "</td></tr>";
+                _mingban_result += "<tr class=\"table-success\"><th class=\"table-col-title\">" + i18next.t("color.地支") + "</th><td>" +  i18next.t("color." + result.dizhi.year) + "</td><td>" +  i18next.t("color." + result.dizhi.month) + "</td><td>" + i18next.t("color." + result.dizhi.date) + "</td><td>" + i18next.t("color." + result.dizhi.hour) + "</td></tr>";
+                _mingban_result += "<tr class=\"\"><th class=\"table-col-title\">" + i18next.t("color.藏干") + "</th><td>" +
+                    getCangganOutput(result.canggan.year, result.cangganwuxing.year)
+                    + "</td><td>" + getCangganOutput(result.canggan.month, result.cangganwuxing.month) + "</td><td>" + getCangganOutput(result.canggan.date, result.cangganwuxing.date) + "</td><td>" + getCangganOutput(result.canggan.hour, result.cangganwuxing.hour) + "</td></tr>";
+                _mingban_result += "<tr class=\"table-info\"><th class=\"table-col-title\">" + i18next.t("color.副星") + "</th><td>" + getFuXingOutput(result.fuxing.year) + "</td><td>" + getFuXingOutput(result.fuxing.month) + "</td><td>" + getFuXingOutput(result.fuxing.date) + "</td><td>" + getFuXingOutput(result.fuxing.hour) + "</td></tr>";
+
+                _mingban_result += "</tbody> </table> "
+                $("#_mingban").html(_mingban_result);
+
+                var _wuxing_result;
+                //_wuxing_result = "<table class=\"table mb-0\"> <tbody> <tr> <th class=\"table-col-title\">阴阳指数</th> <th><table><tr><td>阴</td><td>阳</td></tr><tr class=\"table-active\"><td>30%</td><td>70%</td></tr></table></th> </tr>  "
+                _wuxing_result = ""
+                _wuxing_result += "<table class=\"table mb-0\"> <tbody> "
+                _wuxing_result += "<tr class=\"\"><th class=\"table-col-title\">" + i18next.t("color.喜神") + "</th><td>" + i18next.t("aboutme." + result.xisheng) + "</td></tr>";
+                _wuxing_result += "<tr class=\"\"><th class=\"table-col-title\">" + i18next.t("color.忌神") + "</th><td>" + i18next.t("aboutme." + result.jisheng) + "</td></tr>";
+                _wuxing_result += "<tr class=\"table-success\"><th class=\"table-col-title\" colspan=\"2\">" + i18next.t("color.天运五行") + "</th></tr>";
+
+                [].forEach.call(Object.keys(result.wuxingShiShen), function (value, index) {
+                    _wuxing_result += "<tr class=\"\"><th class=\"table-col-title\">" +  i18next.t("aboutme." + value) + "</th><td>" + getWuXingShiSheng(result.wuxingShiShen[value]) + "</td></tr>";
+                });
+
+                _wuxing_result += "</tbody> </table> "
+                $("#_wuxing").html(_wuxing_result);
+
+                var _dayun_result;
+                var _dayun_th;
+                var _dayun_row1, _dayun_row2, _dayun_row3, _dayun_row4, _dayun_row5;
+                var dayun_tiangan_current, dayun_dizhi_current;
+
+
+                [].forEach.call(Object.keys(result.dayun["dayun"]), function (value, index) {
+                    if (result.dayun["dayun"][value].year <=  new Date().getFullYear()) {
+                        dayun_tiangan_current = i18next.t("color." + result.dayun["dayun"][value].tiangan);
+                        dayun_dizhi_current = i18next.t("color." + result.dayun["dayun"][value].dizi);
+                    }
+                });
+
+                _dayun_result = "<table class=\"table mb-0\"> <thead><tr> <th></th><th>" + i18next.t("color.大运(今年)") + "</th><th>" + i18next.t("color.年柱") + "</th><th>" + i18next.t("color.月柱") + "</th><th>" + i18next.t("color.日柱") + "</th><th>" + i18next.t("color.时柱") + "</th> </tr > </thead > <tbody> "
+                _dayun_result += "<tr class=\"table-active\"><th class=\"table-col-title\">" + i18next.t("color.天干") + "</th><td>" + dayun_tiangan_current + "</td><td>" + i18next.t("color." + result.tiangan.year) + "</td><td>" +  i18next.t("color." + result.tiangan.month) + "</td><td>" +  i18next.t("color." + result.tiangan.date) + "</td><td>" +  i18next.t("color." + result.tiangan.hour) + "</td></tr>";
+                _dayun_result += "<tr class=\"\"><th class=\"table-col-title\">" + i18next.t("color.地支") + "</th><td>" + dayun_dizhi_current + "</td><td>" +  i18next.t("color." + result.dizhi.year) + "</td><td>" +  i18next.t("color." + result.dizhi.month) + "</td><td>" +  i18next.t("color." + result.dizhi.date) + "</td><td>" +  i18next.t("color." + result.dizhi.hour) + "</td></tr>";
+                _dayun_result += "</tbody> </table>";
+
+                
+
+                _dayun_th = "";
+                _dayun_row1 = "";
+                _dayun_row2 = "";
+                _dayun_row3 = "";
+                _dayun_row4 = "";
+                _dayun_row5 = "";
+
+                var DY;
+                DY = result.dayun;
+                
+                [].forEach.call(Object.keys(result.dayun["dayun"]), function (value, index) {
+                    
+                    _dayun_th += "<th>" +  result.dayun["dayun"][value].year + "</th>";
+                    _dayun_row1 += "<td>" + i18next.t("color." + result.dayun["dayun"][value].zhuxing) + "</td>";
+                    _dayun_row2 += "<td>" + i18next.t("color." + result.dayun["dayun"][value].tiangan) + "</td>";
+                    _dayun_row3 += "<td>" + i18next.t("color." + result.dayun["dayun"][value].dizi) + "</td>";
+                    _dayun_row4 += "<td>" + getFuXingOutput(result.dayun["dayun"][value].canggang) + "</td>";
+                    _dayun_row5 += "<td>" + getFuXingOutput(result.dayun["dayun"][value].fuxing) + "</td>";
+                });
+
+                _dayun_result += "<table class=\"table mb-0 dayun\"> <thead><tr> <th class=\"table-col-title\">" + i18next.t("color.年") + "</th>" + _dayun_th + "</tr > </thead > <tbody> "
+                _dayun_result += "<tr class=\"table-active\"><th class=\"table-col-title\">" + i18next.t("color.主星") + "</th>" + _dayun_row1 + "</tr>";
+                _dayun_result += "<tr class=\"\"><th class=\"table-col-title\">" + i18next.t("color.天干") + "</th>" + _dayun_row2 + "</tr>";
+                _dayun_result += "<tr class=\"table-success\"><th class=\"table-col-title\">" + i18next.t("color.地支") + "</th>" + _dayun_row3 + "</tr>";
+                _dayun_result += "<tr class=\"\"><th class=\"table-col-title\">" + i18next.t("color.藏干") + "</th>" + _dayun_row4 + "</tr>";
+                _dayun_result += "<tr class=\"table-info\"><th class=\"table-col-title\">" + i18next.t("color.副星") + "</th>" + _dayun_row5 + "</tr>";
+                _dayun_result += "</tbody> </table> ";
+
+                $("#_dayun").html(_dayun_result);
+
+                var _xianghexiangke_result;
+
+                _xianghexiangke_result = "<table class=\"table mb-0\"> <thead><tr> <th class=\"table-col-title\">" + i18next.t("color.相生相克") + "</th><th>" + i18next.t("color.结果") + "</th><th>" + i18next.t("color.对策") + "</th> </tr > </thead > <tbody> "
+                _xianghexiangke_result += "<tr class=\"table-active\"><td></td><td></td><td></td></tr>";
+                _xianghexiangke_result += "<tr class=\"\"><td></td><td></td><td></td></tr>";
+                _xianghexiangke_result += "</tbody> </table> <br/><br/>";
+
+                $("#_xianghexiangke").html(_xianghexiangke_result);
+
+              }
+        }
+    }
+</script>

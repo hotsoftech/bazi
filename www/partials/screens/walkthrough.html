@@ -1,0 +1,462 @@
+<template>
+	<div class="page no-navbar no-toolbar no-swipeback">
+
+		<div class="page-content">
+
+			<div class="walkthrough">
+				<div class="swiper-container walkthrough-container">
+
+					<div class="swiper-wrapper walkthrough-wrapper">
+
+						<div class="swiper-slide walkthrough-slide">
+							<div class="slide-title" data-i18n="walkthrough.welcome">Welcome to Birth Code</div>
+							<div class="slide-media">
+								<img class="theme-light-only" src="{{$root.config.app.logo}}" width="128" alt="" />
+							</div>
+							<div class="slide-actions">
+								<button class="button button-big button-fill button-round" data-i18n="walkthrough.next" @click="openSlideLanguage">Next</button>
+							</div>
+						</div>
+
+						<div class="swiper-slide walkthrough-slide">
+							<div class="slide-title" data-i18n="walkthrough.chooselanguage">Choose your Language</div>
+							<div class="slide-media">
+								<ul class="flags-wrapper">
+									<li>
+										<label>
+											<input type="radio" name="language" value="en" data-dir="ltr" />
+											<img src="assets/custom/img/language/flag-us.png" alt="" />
+											<span data-i18n="walkthrough.english">English</span>
+										</label>
+									</li>
+									<li>
+										<label>
+											<input type="radio" name="language" value="zh_cn" data-dir="ltr" />
+											<img src="assets/custom/img/language/flag-cn.png" alt="" />
+											<span data-i18n="walkthrough.simplified">Simplified Chinese</span>
+										</label>
+									</li>
+									<li>
+										<label>
+											<input type="radio" name="language" value="zh_tw" data-dir="ltr" />
+											<img src="assets/custom/img/language/flag-tw.png" alt="" />
+											<span data-i18n="walkthrough.traditional">Traditional Chinese</span>
+										</label>
+									</li>
+								</ul>
+							</div>
+                            <div class="slide-actions">
+                                <button class="button button-big button-fill button-round button-walk-back" data-i18n="walkthrough.back" @click="backSlide(0)">Back</button>
+								<button class="button button-big button-fill button-round" data-i18n="walkthrough.next" @click="openSlideTheme">Next</button>
+							</div>
+						</div>
+
+						<div class="swiper-slide walkthrough-slide">
+							<div class="slide-title" data-i18n="walkthrough.fill">Fill your Information</div>
+							<div class="slide-media">
+								<form name="my-form" id="my-form" class="ck-form">
+                                <div class="list no-hairlines no-hairlines-between">
+                                    <ul>
+                                      <li class="item-content item-input">
+                                        <div class="item-inner">
+                                          <label for="form-name" class="item-title item-label" data-i18n="form.name">Name</label>
+                                            <div class="input-group">
+                                              <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                              </div>
+                                              <input type="text" class="form-control" id="form-name" name="form-name" required>
+                                              <span class="input-clear-button"></span>
+                                            </div>
+                                            <div class="input-error-message" id="invalid-form-name"></div>
+                                        </div>
+                                      </li>
+                                      <li class="item-content item-input">
+                                        <div class="item-inner">
+                                          <label for="form-dob" class="item-title item-label" data-i18n="form.dob">DOB</label>
+                                            <div class="input-group">
+                                              <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                              </div>
+                                              <input type="date" class="form-control" id="form-dob" name="form-dob" data-i18n="[placeholder]form.mm-dd-yyyy" required>
+                                            </div>
+                                            <div class="input-error-message" id="invalid-form-dob"></div>
+                                        </div>
+                                      </li>
+                                      <li class="item-content item-input">
+                                        <div class="item-inner">
+                                          <label for="form-time" class="item-title item-label" data-i18n="form.dob-time">DOB Time</label>
+                                            <div class="input-group">
+                                              <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                                              </div>
+                                              <input type="time" class="form-control" id="form-time" name="form-time" required>
+                                            </div>
+                                            <div class="input-error-message" id="invalid-form-time"></div>
+                                        </div>
+                                      </li>
+                                      <li class="item-content item-input">
+                                        <div class="item-inner">
+                                          <label for="form-gender" class="item-title item-label" data-i18n="form.gender">Gender</label>
+                                            <div class="input-group">
+                                              <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+                                              </div>
+                                              <select id="form-gender" name="form-gender" class="form-control" >
+                                                <option value="M" data-i18n="form.male"></option>
+                                                <option value="F" data-i18n="form.female"></option>
+                                              </select>
+                                            </div>
+                                            <div class="input-error-message" id="invalid-form-gender"></div>
+                                        </div>
+                                      </li>
+                                    </ul>
+			                    </div>
+                                </form>
+							</div>
+							<div class="slide-actions">
+                                <button class="button button-big button-fill button-round button-walk-back" data-i18n="walkthrough.back" @click="backSlide(1)">Back</button>
+								<button class="button button-big button-fill button-round" data-i18n="walkthrough.started" @click="save_cal()">Get Started</button>
+							</div>
+						</div>
+
+						<div class="swiper-slide walkthrough-slide">
+							<div class="slide-title">Explore Nectar</div>
+							<div class="slide-media">
+								<img src="assets/custom/img/rocket.svg" width="128" alt="" />
+							</div>
+							<div class="slide-text">You're all set!</div>
+							<div class="slide-actions">
+								<button class="button button-big button-fill button-round" @click="loadNextScreen">Get Started</button>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="swiper-pagination walkthrough-pagination"></div>
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</template>
+
+<style scoped>
+	.walkthrough {
+		height: 100%;
+	}
+
+	.walkthrough-container {
+		height: 100%;
+	}
+
+	.walkthrough-wrapper {
+		height: 100%;
+	}
+
+	.walkthrough-slide {
+		align-items: stretch;
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		justify-content: flex-start;
+		text-align: center;
+	}
+
+	.ios {{this}} .walkthrough-slide {
+		padding: 35px 15px;
+	}
+
+	.md {{this}} .walkthrough-slide {
+		padding: 32px 16px;
+	}
+
+	.walkthrough-slide .slide-title {
+		font-size: 26px;
+	}
+
+	.ios {{this}} .walkthrough-slide .slide-media {
+		margin: 35px 0;
+	}
+
+	.md {{this}} .walkthrough-slide .slide-media {
+		margin: 32px 0;
+	}
+
+	.walkthrough-slide .slide-text {
+		font-size: 16px;
+	}
+
+	.ios {{this}} .walkthrough-slide .slide-text {
+		margin-bottom: 35px;
+	}
+
+	.md {{this}} .walkthrough-slide .slide-text {
+		margin-bottom: 32px;
+	}
+
+	.walkthrough-slide .slide-actions {
+		margin-top: auto;
+	}
+
+	.walkthrough-actions {
+		bottom: 0;
+		box-sizing: border-box;
+		left: 0;
+		position: absolute;
+		width: 100%;
+		z-index: 50;
+	}
+
+	.ios {{this}} .walkthrough-actions {
+		margin-bottom: 35px;
+		padding: 0 15px;
+	}
+
+	.md {{this}} .walkthrough-actions {
+		margin-bottom: 32px;
+		padding: 0 16px;
+	}
+
+	.walkthrough-pagination {
+		bottom: 80px;
+	}
+
+	.flags-wrapper {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		text-align: center;
+	}
+
+	.flags-wrapper li {
+		display: inline-block;
+		margin: 6px 12px;
+	}
+
+	.flags-wrapper li label input {
+		display: none;
+	}
+
+	.flags-wrapper li label img {
+		filter: grayscale(100%);
+		height: auto;
+		width: 72px;
+	}
+
+	.flags-wrapper label span {
+		display: block;
+		margin: 16px 0;
+	}
+
+	.flags-wrapper li label input:checked ~ img {
+		filter: grayscale(0);
+	}
+
+	.flags-wrapper li label input:checked ~ span {
+		font-weight: bold;
+	}
+
+	.colors-wrapper {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		text-align: center;
+	}
+
+	.colors-wrapper li {
+		display: inline-block;
+		margin: 4px;
+	}
+
+	.colors-wrapper li label {
+		display: block;
+	}
+
+	.colors-wrapper li label input {
+		display: none;
+	}
+
+	.colors-wrapper li label i .fa-check {
+		display: none;
+	}
+
+	.colors-wrapper li label > span {
+		display: block;
+		margin: 16px 0;
+	}
+
+	.colors-wrapper li label input:checked ~ i .fa-check {
+		display: block;
+	}
+
+	.colors-wrapper li label input:checked ~ span {
+		font-weight: bold;
+	}
+
+    .ck-form {
+        text-align:left;
+    }
+
+    .ck-form .list ul {
+        padding: 0px;
+    }
+
+    .list .item-inner {
+        padding-bottom: 0px;
+    }
+
+   .list .item-input-with-value .item-inner {
+      padding-bottom: 8px;
+    }
+   
+</style>
+
+<script>
+	return {
+		data: function() {
+			return {
+				nextScreen: '/home',
+				walkthrough: null
+			}
+		},
+		methods: {
+			checkmarkCurrentLanguage: function() {
+				var self = this;
+				var currentLanguage = app.utils.i18n.getLanguage();
+				self.$('[name=language][value=' + currentLanguage.lang + ']').prop('checked', true);
+			},
+			checkmarkCurrentTheme: function() {
+				var self = this;
+				var currentThemeColor = app.utils.theme.getColor();
+				self.$('[name=theme-color][value=' + currentThemeColor + ']').prop('checked', true);
+			},
+			initializeWalkthrough: function() {
+				var self = this;
+				self.walkthrough = app.swiper.create('.walkthrough-container', {
+					allowTouchMove: false,
+					pagination: {
+						el: '.walkthrough-pagination',
+						type: 'progressbar'
+					}
+				});
+			},
+			initializeFormValidator: function(self) {
+                
+			    $('#my-form').on('focus', ':input', function () {
+			        $(this).attr('autocomplete', 'off');
+			    });
+
+			    $("#my-form").validate({
+			        rules: {
+			            "form-name": "required",
+			            "form-dob": {
+			                required: true
+			            },
+			            "form-time": {
+			                required: true
+			            },
+			        },
+			        messages: {
+			            "form-name": i18next.t("form.emptyerror"),
+			            "form-dob": i18next.t("form.emptyerror"),
+			            "form-time": {
+			                required: i18next.t("form.emptyerror")
+			            }
+			        },
+			        errorPlacement: function(error, element) {
+			            console.log(error, element);
+			            error.appendTo('#invalid-' + element.attr('id'));
+			        },
+			    });
+
+
+			    $('#my-form').submit(function () {
+			        self.save_cal();
+			        return false;
+			    });
+
+			},
+			backSlide: function(index) {
+			    var self = this;
+			    self.walkthrough.slideTo(index);
+			},
+			openSlideLanguage: function() {
+				var self = this;
+				self.walkthrough.slideNext();
+				self.$('[name=language]').on('change', function() {
+					app.utils.i18n.setLanguage({lang: this.value, dir: this.dataset.dir});
+				});
+			},
+			openSlideTheme: function() {
+				var self = this;
+				self.walkthrough.slideNext();
+				self.initializeFormValidator(self);
+			},
+			openSlideExplore: function() {
+				var self = this;
+				self.walkthrough.slideNext();
+			},
+			loadNextScreen: function() {
+				var self = this;
+				localStorage.setItem('Bazi_OldUser', 'true');
+
+				if (localStorage.getItem('Bazi_OldUser')) {
+				    if (window.config.theme.navigation == 'tabbar') {
+				        var listView = app.views.create('.view-list', {
+				            url: '/list'
+				        });
+				        var settingView = app.views.create('.view-setting', {
+				            url: '/setting'
+				        });
+				        var aboutView = app.views.create('.view-about', {
+				            url: '/about'
+				        });
+				    }
+				}
+				
+				app.views.current.router.navigate(self.nextScreen, {reloadCurrent: true});
+			},
+			save_cal: function () {
+			    var self = this;
+			    var formData = app.form.convertToData('#form-add');
+                
+			    var dbList = [];
+			    dbList = JSON.parse(localStorage.getItem("bazi_list"));
+			    var data = {};
+
+			    if ($("#form-name").valid() && $("#form-dob").valid() && $("#form-time").valid()) {
+
+			        data["id"] = app.utils.id();
+			        localStorage.setItem('Bazi_Default', data["id"]);
+			        
+			        data["name"] = $("#form-name").val();
+			        data["dob"] = $("#form-dob").val();
+			        data["time"] = $("#form-time").val();
+			        data["gender"] = $("#form-gender").val();
+			        if (dbList == null) {
+			            dbList = [];
+			        }
+			        dbList.push(data);
+			        localStorage.setItem("bazi_list",JSON.stringify(dbList));
+			        app.data.db_list = dbList;
+                    
+			        localStorage.setItem('Bazi_OldUser', 'true');
+
+			        self.loadNextScreen();
+			        
+			    }
+			},
+		},
+		on: {
+			pageInit: function() {
+				var self = this;
+				self.checkmarkCurrentLanguage();
+				//self.checkmarkCurrentTheme();
+				self.initializeWalkthrough();
+			}
+		}
+	}
+</script>

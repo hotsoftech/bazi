@@ -1,0 +1,638 @@
+﻿<template>
+<div class="page no-swipeback" data-name="list"> 
+    <div class="navbar">
+        <div class="navbar-inner">  
+            <div class="left"> 
+            <a href="#" id="lnkFilter" data-popup=".my-popup" class="popup-open left-link"><i class="fa fa-filter"><span data-i18n="form.filter">Filter</span></i></a>   
+            </div>
+            <div class="title filter-category">{{filter}}</div>
+            <!--<div class="subnavbar ios-only">
+				<div class="subnavbar-inner">
+                    <div class="title filter-category" >{{filter}}</div>
+                </div>    
+            </div>-->
+            <div class="right">
+                <a href="#" data-popup=".add-popup" class="link popup-open" >
+                    <i class="fa fa-plus"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="popup my-popup">
+      <div class="view">
+        <div class="page">
+          <div class="navbar">
+            <div class="navbar-inner">
+              <div class="right">
+                <a class="link popup-close" data-i18n="global.cancel">Cancel</a>
+              </div>
+            </div>
+          </div>
+          <div class="page-content">
+            <div class="list">
+              <ul>
+                <li @click="filtering(this);">
+                  <label class="item-radio item-content">
+                    <input type="radio" name="demo-radio" value="ALL" data-i18n="[data-desc]form.all-categories"  @change="filtering(this);" checked />
+                    <i class="icon icon-radio"></i>
+                    <div class="item-inner">
+                      <div class="item-title" data-i18n="form.all-categories">All Categories</div>
+                    </div>
+                  </label>
+                </li>
+              </ul>
+            <div class="block-title" data-i18n="form.gender">Gender</div>
+              <ul>
+                <li>
+                  <label class="item-radio item-content">
+                    <input type="radio" name="demo-radio" value="M" data-i18n="[data-desc]form.male" @change="filtering(this);"/>
+                    <i class="icon icon-radio"></i>
+                    <div class="item-inner">
+                      <div class="item-title" data-i18n="form.male">Male</div>
+                    </div>
+                  </label>
+                </li>
+                <li>
+                  <label class="item-radio item-content">
+                    <input type="radio" name="demo-radio" value="F" data-i18n="[data-desc]form.female" @change="filtering(this);"/>
+                    <i class="icon icon-radio"></i>
+                    <div class="item-inner">
+                      <div class="item-title" data-i18n="form.female">Female</div>
+                    </div>
+                  </label>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="popup add-popup">
+      <div class="view">
+        <div class="page">
+          <div class="navbar">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner">
+              <div class="title" data-i18n="form.fill">Input Data</div>
+              <div class="right">
+                <!-- Link to close popup -->
+                <a class="link popup-close" data-i18n="form.close">Close</a>
+              </div>
+            </div>
+          </div>
+          <div class="page-content">
+            <div class="block">
+                <div class="title-container">
+                    <span class="title-date" data-i18n="form.subtitle">Please fill in name, date of birth and gender</span>
+                </div>
+            </div>
+            <form name="form-add" id="form-add" class="ck-form">
+            <div class="list no-hairlines no-hairlines-between">
+                <ul>
+                  <li class="item-content item-input">
+                    <div class="item-inner">
+                      <label for="form-name1" class="item-title item-label" data-i18n="form.name">Name</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                          </div>
+                          <input type="text" class="form-control" id="form-name1" name="form-name1" required>
+                          <span class="input-clear-button"></span>
+                        </div>
+                        <div class="input-error-message" id="invalid-form-name1"></div>
+                    </div>
+                  </li>
+                  <li class="item-content item-input">
+                    <div class="item-inner">
+                      <label for="form-dob" class="item-title item-label" data-i18n="form.dob">DOB</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                          </div>
+                          <input type="date" class="form-control" id="form-dob1" name="form-dob1" data-i18n="[placeholder]form.mm-dd-yyyy" required>
+                        </div>
+                        <div class="input-error-message" id="invalid-form-dob1"></div>
+                    </div>
+                  </li>
+                  <li class="item-content item-input">
+                    <div class="item-inner">
+                      <label for="form-time" class="item-title item-label" data-i18n="form.dob-time">DOB Time</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                          </div>
+                          <input type="time" class="form-control" id="form-time1" name="form-time1" required>
+                        </div>
+                        <div class="input-error-message" id="invalid-form-time1"></div>
+                    </div>
+                  </li>
+                  <li class="item-content item-input">
+                    <div class="item-inner">
+                      <label for="form-gender" class="item-title item-label" data-i18n="form.gender">Gender</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+                          </div>
+                          <select id="form-gender1" name="form-gender1" class="form-control" >
+                            <option value="M" data-i18n="form.male"></option>
+                            <option value="F" data-i18n="form.female"></option>
+                          </select>
+                        </div>
+                        <div class="input-error-message" id="invalid-form-gender1"></div>
+                    </div>
+                  </li>
+                </ul>
+			</div>
+            <div class="block">
+				<a class="button button-big button-fill red-button" @click="save_cal(this);" data-i18n="form.save-calculate" id="form-submit">Save & Calculate</a>
+			</div>
+            </form>
+          </div>
+        </div>
+      </div>
+   </div>
+       
+        <!-- Searchbar inside of Subnavbar -->
+        <form class="searchbar">
+            <div class="searchbar-inner">
+                <div class="searchbar-input-wrap">
+                    <input type="search" data-i18n="[placeholder]form.search">
+                    <i class="searchbar-icon"></i>
+                    <span class="input-clear-button"></span>
+                </div>
+                <span class="searchbar-disable-button if-not-aurora" data-i18n="global.cancel">Cancel</span>
+            </div>
+        </form>
+    
+
+	<div class="page-content ptr-content " data-ptr-distance="55" @ptr:refresh="refreshList">
+        <div class="searchbar-backdrop"></div>
+            <div class="ptr-preloader">
+                <div class="preloader"></div>
+                <div class="ptr-arrow"></div>
+            </div>
+
+             {{#if namelist}}
+                
+            <div class="list media-list">
+            <ul id="ul_db">
+             {{#each namelist}}
+			    <li class="swipeout deleted-callback">
+                    <div class="item-content swipeout-content" data-id="{{this.id}}">
+                        <div class="item-media">
+                            <img {{#js_if "this.gender == 'M'"}} src="assets/custom/img/boy.svg" class="db-gender gradient-sky-dark shadow-large" {{else}} src="assets/custom/img/girl.svg" class="db-gender gradient-green-dark shadow-large" {{/js_if}}  />
+                            <span class="label-default"></span>
+                        </div>
+                        <div class="item-inner">
+                            <div class="item-title-row">
+							    <div class="item-title">{{this.name}}</div>
+						    </div>
+						    <div class="item-subtitle">{{this.dob}}&nbsp;&nbsp;{{this.time}}</div>
+                        </div>
+                    </div>
+                    <div class="swipeout-actions swipeout-actions-left">
+                        <a data-id="{{this.id}}" class="color-green swipeout-close swipeout-default" >
+                            <i class="fa fa-2x fa-user-circle"></i>
+                            <span class="swipeout-label" data-i18n="form.default" >Default</span></a>
+                    </div>
+                     <div class="swipeout-actions swipeout-actions-right">
+                        <a data-id="{{this.id}}" class="swipeout-delete1 bg-color-red-8" data-close-on-cancel="true" >
+                            <i class="fa fa-2x fa-times-circle"></i>
+                            <span class="swipeout-label" data-i18n="global.delete" >Delete</span>
+                        </a>
+                    </div>
+                </li>
+             {{/each}}
+            </ul>
+            </div>
+            {{/if}}
+    </div>
+    
+</div>
+</template>
+<style scoped>
+
+    .md {{this}} .navbar-inner {
+        justify-content: space-between;
+    }
+
+    .db-gender {
+        height: 48px;
+        border-radius: 25px;
+        padding: 3px 0px;
+    }
+    .swipeout-delete {
+        background: #f76b71;
+        background: -moz-linear-gradient(top, #f76b71 1%, #de2125 100%);
+        background: -webkit-linear-gradient(top, #f76b71 1%,#de2125 100%);
+        background: linear-gradient(to bottom, #f76b71 1%,#de2125 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f76b71', endColorstr='#de2125',GradientType=0 );
+        color:#fff!important;
+    }
+
+    .shadow-large {
+        box-shadow: 0 20px 67px 0 rgba(0,0,0,.12),0 5px 14px 0 rgba(0,0,0,.2)!important;
+    }
+
+    .gradient-sky-dark {
+        background-image: linear-gradient(180deg,#4690f0 0,#2a5da3 100%);
+    }
+    .gradient-green-dark {
+        background-image: linear-gradient(180deg,#9acb66 0,#6e9b3d 100%);
+    }
+
+
+    .ios {{this}} .item-title {
+        color: #000;
+        font-size: 19px;
+        font-weight: 500;
+        margin-bottom: 3px;
+    }
+    .md {{this}} .item-title {
+        color: #000;
+        font-size: 19px;
+        font-weight: 500;
+        margin-bottom: 3px;
+    }
+
+    
+
+    .list {
+        margin: 0;
+    }
+    .list ul:before {
+        background-color: #FFFFFF;
+    }
+    .list ul:after {
+        background-color: #FFFFFF;
+    }
+
+    .list .item-subtitle {
+        font-size: 16px;
+        font-weight: 500;
+        color: #5e5e5f;
+    }
+
+
+    .navbar, .appbar {
+        /*background-color: #F54E5E;
+        background: linear-gradient(to bottom right, #ff2e54, #c519e4);*/
+        padding-left: 10px;
+    }
+
+    .left-link i {
+        color: var(--f7-theme-color);
+        padding-left: 15px;
+    }
+
+    .left-link i:before {
+        padding-right: 5px;
+    }
+
+     .title-container {
+        margin: 30px 0 10px;
+    }
+
+   .title-date {
+       color: rgba(255, 255, 255, 0.6);
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .title-container.white h1 {
+    color: #fff;
+}
+
+    .title-container.white i {
+        color: #fff;
+        font-size: 35px;
+    }
+
+    .block {
+        margin: 0px;
+    }
+
+    .md .tabbar .tab-link-highlight, .md .tabbar-labels .tab-link-highlight {
+        background: linear-gradient(to bottom right, #ff2e54, #c519e4);
+    }
+
+
+    .swipeout-actions i {
+        display: block;
+	    width: 32px;
+        height: 32px;
+        margin: 10px auto 0;
+        line-height: 32px;
+        text-align: center;
+        font-size: 25px;
+    }
+
+    .swipeout-actions a{
+      text-decoration:none;
+      width:100%;
+      height:100%;
+      display:block;
+     color:#fff!important;
+    }
+
+    .swipeout-actions a span{
+      padding-top: 1px;
+    }
+
+
+   .item-media .label-default {
+        line-height: 12px;
+        position: absolute;
+        top: 12px;
+        background-color: var(--f7-theme-color);
+        height: 15px;
+        width: 15px;
+        border-radius: 25px;
+ }
+   .item-media .label-default.none {
+        display:none
+ }
+    /*.page-content {
+      background: linear-gradient(-45deg, #30cfd0, #330867, #ff0844, #ffb199)
+        no-repeat 50% 50% / 400% 400%;
+      animation: gradBG 10s ease infinite;
+    }
+
+    @keyframes gradBG {0% {background-position: 0% 50%;}50% {background-position: 100% 50%;}100% {background-position: 0% 50%;}}*/
+
+</style>
+<script>
+    return {
+        data: function() {
+            return {
+                namelist:{},
+                filter:'',
+                swipeout_isopen: false
+            }
+        },
+        methods: {
+            initializeFormValidator: function(self) {
+                
+                $('#form-add').on('focus', ':input', function () {
+                    
+                    $(this).attr('autocomplete', 'off');
+                });
+
+                $("#form-add").validate({
+                    rules: {
+                        "form-name1": "required",
+                        "form-dob1": {
+                            required: true
+                        },
+                        "form-time1": {
+                            required: true
+                        },
+                    },
+                    messages: {
+                        "form-name1": i18next.t("form.emptyerror"),
+                        "form-dob1": i18next.t("form.emptyerror"),
+                        "form-time1": {
+                            required: i18next.t("form.emptyerror")
+                        }
+                    },
+                    errorPlacement: function(error, element) {
+                        console.log(error, element);
+                        error.appendTo('#invalid-' + element.attr('id'));
+                    },
+                });
+
+
+                $('#form-add').submit(function () {
+                    self.save_cal();
+                    return false;
+                });
+
+            },
+		    
+			
+            clearForm: function() {
+                $("#form-name1").val("");
+                $("#form-dob1").val("");
+                $("#form-time1").val("");
+                $("#form-gender1").val("M");
+
+                var self = this;
+                self.refreshList();
+
+            },
+            save_cal: function () {
+                
+                var formData = app.form.convertToData('#form-add');
+                
+                var dbList = [];
+                dbList = JSON.parse(localStorage.getItem("bazi_list"));
+                var data = {};
+
+                if ($("#form-name1").valid() && $("#form-dob1").valid() && $("#form-time1").valid()) {
+
+                    data["id"] = app.utils.id();
+                    data["name"] = $("#form-name1").val();
+                    data["dob"] = $("#form-dob1").val();
+                    data["time"] = $("#form-time1").val();
+                    data["gender"] = $("#form-gender1").val();
+                    if (dbList == null) {
+                        dbList = [];
+                    }
+                    dbList.push(data);
+                    localStorage.setItem("bazi_list",JSON.stringify(dbList));
+                   
+                    
+                    this.clearForm();
+                    app.view.current.router.navigate('/selection/' + data["id"]);
+                    app.popup.close('.add-popup');
+                }
+                //return false;
+            },
+            refreshList: function (e) {
+                var self = this;
+                self.filtering();
+
+                //console.log(self, e, "refresh list");
+                setTimeout(function () {
+                    app.ptr.done(); 
+                }, 1000);
+            },
+            filtering: function (e) {
+                var self = this;
+                var dbList = JSON.parse(localStorage.getItem("bazi_list"));
+                var getValue =  $("input:radio[name='demo-radio']:checked");
+                
+                
+                var category_desc;
+                
+                self.$setState({
+                    namelist: []
+                });
+
+                if (getValue.val() == "M") {
+                    category_desc = "<span data-i18n=\"form.male\">" + i18next.t("form.male") + "</span>";
+                } else if (getValue.val() == "F") {
+                    category_desc = "<span data-i18n=\"form.female\">" + i18next.t("form.female") + "</span>"; 
+                } else{
+                    category_desc = "<span data-i18n=\"form.all-categories\">" + i18next.t("form.all-categories") + "</span>";
+                }
+
+                
+                if (getValue.val() != 'ALL') {
+                    dbList = $.grep(dbList, function (n) {
+                        return (n.gender == getValue.val());
+                    });
+                };
+                
+               
+                self.$setState({
+                    namelist: dbList,
+                    filter: category_desc
+                });
+               
+                
+                $(".filter-category").html(category_desc);
+                
+                $(".label-default").addClass("none");
+                var default_id = localStorage.getItem('Bazi_Default');
+                $("[data-id=\"" + default_id + "\"] .label-default").removeClass('none');
+
+
+                $('.swipeout-default').on('click', function () {
+                    var index = $(this).data("id");
+                    localStorage.setItem('Bazi_Default', index);
+
+                    $(".label-default").addClass("none");
+                    $("[data-id=\"" + index + "\"] .label-default").removeClass('none');
+
+                });
+
+                $('#ul_db .item-content').on('click', function () {
+
+                    var id = $(this).data("id");
+                    console.log(id, app.data.swipeout_isopen, self.swipeout_isopen);
+                    if (!self.swipeout_isopen) {
+                        app.view.current.router.navigate('/selection/' + id)
+                    } else {
+                        app.swipeout.close(app.swipeout.el);
+                    }
+                    
+                });
+
+
+                $(".swipeout-delete1").on("click",function() {
+                    
+                    var index = $(this).data("id");
+                    var default_id = localStorage.getItem('Bazi_Default'); 
+                   
+                    
+                    if (index == default_id) {
+                        app.swipeout.close(app.swipeout.el);
+                        var dialog = app.dialog.create({
+                            title: i18next.t("global.information"),
+                            content: '<div class="block no-margin margin-top text-align-center">' +i18next.t("form.removed-default")  + '</div>', //i18next.t("form.removed"),
+                            cssClass: "result-dialog text-center",
+                            buttons: [
+                            {
+                                text: "OK",
+                                bold: true,
+                                color: 'black',
+                            }
+                            ],
+                        })
+                        dialog.open();
+                    }
+                    else {
+
+                        app.swipeout.delete(app.swipeout.el);
+
+                        dbList = JSON.parse(localStorage.getItem("bazi_list"));
+
+                        dbList = $.grep(dbList, function (n) {
+                            return (n.id != index); 
+                        });
+                        localStorage.setItem("bazi_list", JSON.stringify(dbList))
+                        
+                        var dialog = app.dialog.create({
+                            title: i18next.t("form.removed"),
+                            content: '<div class="block no-margin margin-top text-align-center"><i class="fa fa-4x fa-times text-color-red"></i></div>', //i18next.t("form.removed"),
+                            cssClass: "result-dialog text-center",
+                            buttons: [
+                            {
+                                text: "OK",
+                                bold: true,
+                                color: 'black',
+                            }
+                            ],
+                        })
+
+                        dialog.open();
+
+
+                    }
+                    
+                });
+
+                $(".swipeout").on('swipeout:open', function (e) {
+                    self.swipeout_isopen = true;
+                });
+
+                $(".swipeout").on('swipeout:closed', function (e) {
+                    self.swipeout_isopen = false;
+                });
+
+                $(".swipeout").on('swipeout:deleted', function (e) {
+                    self.swipeout_isopen = false;
+                });
+                
+
+                app.popup.close();
+                //app.ptr.refresh();
+            }
+        },
+        on: {    
+               pageInit: function() {
+                var self = this;
+               
+                self.filtering();
+                
+                
+                $('.add-popup').on('popup:opened', function (e) {
+                    self.initializeFormValidator(self);
+                });
+
+                //$('#ul_db .item-content').on('click', function () {
+                //    var id = $(this).data("id");
+                //    console.log(id, app.data.swipeout_isopen, self.swipeout_isopen);
+                //    if (!self.swipeout_isopen) {
+                //        app.view.current.router.navigate('/selection/' + id)
+                //    } else {
+                //        app.swipeout.close(app.swipeout.el);
+                //    }
+                    
+                //});
+
+                var searchbar = app.searchbar.create({
+                    el: '.searchbar',
+                    searchContainer: '.media-list',
+                    searchIn: '.item-title',
+                    on: {
+                        enable: function () {
+                            console.log('Searchbar enabled')
+                        },
+                        disable: function () {
+                            console.log('Searchbar disable')
+                        }
+                    }
+                });
+
+            }
+        }
+
+    }
+
+   
+</script>

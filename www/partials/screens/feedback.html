@@ -1,0 +1,229 @@
+﻿<template>
+<div class="page no-toolbar">
+
+		<div class="navbar">
+			<div class="navbar-inner">
+                <div class="left">
+					<a href="#" class="link back">
+						<i class="icon icon-back"></i>
+						<span class="ios-only" data-i18n="global.back">Back</span>
+					</a>
+				</div>
+				<div class="title" data-i18n="global.feedback">Help</div>
+			</div>
+		</div>
+
+		<div class="page-content">
+            <div class="block text-align-center">
+				<p><span data-i18n="feedback.question">How do you feel about app?</span></p>
+			</div>
+			
+            <form name="feedback" action="#" method="POST" enctype="multipart/form-data">
+				<div class="block">
+					<ul class="reactions-wrapper">
+						<li>
+							<label>
+								<input type="radio" name="reaction" value="angry" />
+								<img src="assets/custom/img/emoji-angry.svg" alt="" />
+								<span data-i18n="feedback.angry">Angry</span>
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="radio" name="reaction" value="sad" />
+								<img src="assets/custom/img/emoji-sad.svg" alt="" />
+								<span data-i18n="feedback.sad">Sad</span>
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="radio" name="reaction" value="meh" />
+								<img src="assets/custom/img/emoji-meh.svg" alt="" />
+								<span data-i18n="feedback.meh">Meh</span>
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="radio" name="reaction" value="happy" />
+								<img src="assets/custom/img/emoji-happy.svg" alt="" />
+								<span data-i18n="feedback.happy">Happy</span>
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="radio" name="reaction" value="wow" />
+								<img src="assets/custom/img/emoji-wow.svg" alt="" />
+								<span data-i18n="feedback.wow">Wow</span>
+							</label>
+						</li>
+					</ul>
+                    
+					<div class="input-error-message emoji-error "></div>
+				</div>
+                <div class="block">
+				    <p><span data-i18n="feedback.comment">Comment</span></p>
+                    <textarea name="comment" class="resizable"></textarea>
+			    </div>
+                <div class="block">
+                    <button type="submit" class="button button-big button-fill red-button" data-i18n="feedback.submit">Submit</button>
+                </div>
+            </form>
+
+		</div>
+
+	</div>
+</template>
+<style scoped>
+	.reactions-wrapper {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		text-align: center;
+	}
+
+	.reactions-wrapper li {
+		display: inline-block;
+		margin: 6px;
+	}
+
+	.reactions-wrapper li label input {
+  	display: none;
+	}
+
+	.reactions-wrapper li label img {
+		filter: grayscale(100%);
+		height: 48px;
+		transition: all 0.5s;
+		width: auto;
+	}
+
+	.reactions-wrapper li label span {
+		color: #7F8C8D;
+		display: block;
+		margin-top: 4px;
+		transition: all 0.5s;
+	}
+
+	.reactions-wrapper li label input:checked ~ img {
+		filter: grayscale(0);
+		transform: scale(1.2);
+	}
+
+	.reactions-wrapper li label input:checked ~ span {
+		color: #FDCB58;
+		transform: scale(1.2);
+	}
+
+	.input-error-message {
+		display: block;
+		margin-top: 16px;
+		position: relative;
+		text-align: center;
+	}
+
+    textarea {
+        border: 1px solid #D1D1D1; 
+        width: 100%;
+        padding: 10px;
+    }
+</style>
+
+<script>
+    return {
+        data: function () {
+            return {
+                formValidator: null
+            }
+        },
+        methods: {
+            initializeFormValidator: function () {
+                var self = this;
+                self.formValidator = jQuery('form[name=feedback]').validate({
+                    ignore: [],
+                    rules: {
+                        reaction: {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        reaction: {
+                            required: i18next.t("feedback.select-one") 
+                        }
+                    },
+                    errorPlacement: function (error, element) {
+                        error.appendTo('.emoji-error');
+                    },
+                    submitHandler: function (form) {
+                        self.submitForm(form);
+                    }
+                });
+            },
+            submitForm: function (form) {
+                var self = this;
+                var network = localStorage.getItem('Bazi_Network') ? localStorage.getItem('Bazi_Network') : "offline";
+
+                if (network !="online") {
+                    app.toast.show({
+                        text: 'No Internet Connection offline',
+                        position: 'bottom',
+                        cssClass: 'bg-color-red'
+                    });
+                } else {
+                    var apiURL = "http://localhost:38277/API/Feedback/EN";
+                    console.log(apiURL);
+                    var feeling = $("input[name='reaction']:checked").val();
+                    var comment = $("textarea[name='comment']").val();
+                    var clientid =  '123456';
+              
+                    console.log(app.api, feeling, comment);
+
+                    jQuery.ajax({
+                        url: apiURL,
+                        type: 'post',
+                        data: "{\"ClientID\":\"" + clientid + "\",\"Feeling\":\"" + feeling + "\",\"Comment\":\"" + comment +  "\"}",
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        success: function (data) {
+
+                            app.dialog.close();
+                            console.log("feedback", data);
+
+                            if (data.Status == 10) {
+                                app.toast.show({
+                                    text: i18next.t("feedback.thank") ,
+                                    position: 'bottom',
+                                    cssClass: 'toast-round bg-color-green'
+                                });
+                                app.views.current.router.back();
+
+                            } else {
+                                app.toast.show({
+                                    text: i18next.t("feedback.failure") ,
+                                    position: 'bottom',
+                                    cssClass: 'toast-round bg-color-red'
+                                });
+                            }
+
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            debugger;
+                            console.log(xhr.responseText);
+                            console.log("Inside the error method");
+                            app.dialog.close();
+                        },
+                    });
+                }
+                
+
+            }
+        },
+        on: {
+            pageInit: function () {
+                var self = this;
+                self.initializeFormValidator();
+
+                
+            }
+        }
+    }
+</script>
